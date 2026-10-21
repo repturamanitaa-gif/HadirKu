@@ -231,7 +231,7 @@ export default function StudentDashboard() {
                 <div className="flex items-center gap-1.5">
                   <span className="text-white text-sm font-semibold tracking-tight">👋 Hai,</span>
                   <span className="text-white text-sm font-bold truncate">
-                    {profile?.name || 'Budi Santoso'}
+                    {profile?.name || 'Rizky Pratama'}
                   </span>
                 </div>
                 <div className="mt-1 flex items-center gap-2">
@@ -240,6 +240,19 @@ export default function StudentDashboard() {
                   </span>
                 </div>
               </div>
+
+              {/* Logout button */}
+              <button
+                onClick={async () => {
+                  const { logout } = await import('../../contexts/AuthContext').then(() => ({ logout: () => localStorage.removeItem('hadirku_demo_user') }));
+                  logout();
+                  window.location.href = '/HadirKu/login';
+                }}
+                className="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 text-white/90 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                title="Keluar / Ganti Akun"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
             </div>
           </div>
 

@@ -1,9 +1,10 @@
 {
+  "id": "/HadirKu/",
   "name": "HadirKu — Presensi Sekolah",
   "short_name": "HadirKu",
   "description": "Aplikasi Absensi Siswa Berbasis QR Code untuk Sekolah",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/HadirKu/",
+  "scope": "/HadirKu/",
   "display": "standalone",
   "background_color": "#F5F7FB",
   "theme_color": "#172554",

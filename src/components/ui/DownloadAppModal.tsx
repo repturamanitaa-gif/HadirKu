@@ -109,23 +109,35 @@ export default function DownloadAppModal({ isOpen, onClose }: DownloadAppModalPr
           </div>
         )}
 
-        {/* Action Button */}
-        {deferredPrompt ? (
-          <button
-            onClick={handleInstallPWA}
-            className="w-full h-10 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-lg text-xs font-bold transition-colors shadow-sm flex items-center justify-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            <span>Instal Sekarang</span>
-          </button>
-        ) : (
+        {/* Action Buttons */}
+        <div className="w-full space-y-2 pt-1">
+          {deferredPrompt ? (
+            <button
+              onClick={handleInstallPWA}
+              className="w-full h-11 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+            >
+              <Download className="w-4 h-4" />
+              <span>Pasang Langsung ke Layar Utama</span>
+            </button>
+          ) : !isIOS ? (
+            <a
+              href="https://github.com/repturamanitaa-gif/HadirKu/releases"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] no-underline"
+            >
+              <Download className="w-4 h-4" />
+              <span>Download File APK Android (.apk)</span>
+            </a>
+          ) : null}
+
           <button
             onClick={onClose}
-            className="w-full h-10 bg-[#172554] hover:bg-[#0F172A] text-white rounded-lg text-xs font-bold transition-colors shadow-sm flex items-center justify-center gap-2"
+            className="w-full h-9 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center"
           >
-            <span>{isIOS ? 'Saya Mengerti' : 'Tutup'}</span>
+            <span>Tutup Jendela</span>
           </button>
-        )}
+        </div>
       </div>
     </Modal>
   );

@@ -7,6 +7,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build Android APK
@@ -46,9 +49,26 @@ jobs:
           cd android
           ./gradlew assembleDebug --stacktrace
 
+      - name: Rename APK for clarity
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/HadirKu-App-v1.0.apk
+
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: HadirKu-Debug-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: HadirKu-Android-APK
+          path: android/app/build/outputs/apk/debug/HadirKu-App-v1.0.apk
           retention-days: 14
+
+      - name: Create GitHub Release with APK
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+        with:
+          tag_name: v1.0.0
+          name: HadirKu App v1.0.0 (Android APK)
+          body: |
+            ## Rilis Resmi Aplikasi HadirKu Android
+            Silakan unduh file **HadirKu-App-v1.0.apk** di bawah ini untuk menginstal langsung di smartphone Android Anda.
+          files: android/app/build/outputs/apk/debug/HadirKu-App-v1.0.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

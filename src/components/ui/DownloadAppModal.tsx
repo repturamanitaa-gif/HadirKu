@@ -121,13 +121,12 @@ export default function DownloadAppModal({ isOpen, onClose }: DownloadAppModalPr
             </button>
           ) : !isIOS ? (
             <a
-              href="https://github.com/repturamanitaa-gif/HadirKu/releases"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="https://github.com/repturamanitaa-gif/HadirKu/releases/download/v1.0.0/HadirKu-App-v1.0.apk"
+              download="HadirKu-App-v1.0.apk"
               className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] no-underline"
             >
               <Download className="w-4 h-4" />
-              <span>Download File APK Android (.apk)</span>
+              <span>Download File APK Langsung (.apk)</span>
             </a>
           ) : null}
 

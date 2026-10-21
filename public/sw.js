@@ -1,26 +1,19 @@
-const CACHE_NAME = 'hadirku-cache-v2';
-const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/favicon.svg',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-];
-
-// URLs/domains to completely bypass from cache (auth, firestore, APIs)
-const BYPASS_URL_PATTERNS = [
-  /identitytoolkit\.googleapis\.com/,
-  /securetoken\.googleapis\.com/,
-  /firestore\.googleapis\.com/,
-  /firebase/,
-  /\.firebaseio\.com/,
-];
+const CACHE_NAME = 'hadirku-cache-v3';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
+      // Relative caching that works in both localhost and /HadirKu/ subfolder
+      return cache.addAll([
+        './',
+        './index.html',
+        './manifest.webmanifest',
+        './favicon.svg',
+        './icon-192x192.png',
+        './icon-512x512.png',
+      ]).catch((err) => {
+        console.warn('SW cache pre-fetch warning:', err);
+      });
     })
   );
   self.skipWaiting();
@@ -67,9 +60,9 @@ self.addEventListener('fetch', (event) => {
         .catch(async () => {
           const cachedNavigate = await caches.match(request);
           if (cachedNavigate) return cachedNavigate;
-          const cachedIndex = await caches.match('/index.html');
+          const cachedIndex = await caches.match('./index.html');
           if (cachedIndex) return cachedIndex;
-          return caches.match('/');
+          return caches.match('./');
         })
     );
     return;

@@ -1,0 +1,284 @@
+@import "tailwindcss";
+
+/* ==============================================================
+   HadirKu — Clean, Minimal & Professional Design System
+   Palet Desain Resmi:
+   - Royal Blue: #2563EB (Primary Action & Highlights)
+   - Navy: #172554 (Sidebar, Branding, & Primary Deep Accent)
+   - Lavender Muda: #E8EDFF (Subtle Accent Backgrounds, Active Badges)
+   - White: #FFFFFF (Surface, Cards, Inputs, Tables)
+   - Background Canvas: #F5F7FB (Minimalist Page Background)
+   - Text Utama: #0F172A (Slate 900)
+   - Text Sekunder: #64748B (Slate 500)
+   - Border Halus: #E2E8F0 (Slate 200)
+   ============================================================== */
+
+@theme {
+  --color-royal: #2563eb;
+  --color-royal-hover: #1d4ed8;
+  --color-royal-active: #1e40af;
+
+  --color-navy: #172554;
+  --color-navy-hover: #0f172a;
+  --color-navy-active: #020617;
+
+  --color-lavender: #e8edff;
+  --color-lavender-hover: #dbe4ff;
+  --color-lavender-light: #f3f6ff;
+
+  --color-canvas: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+
+  /* Primary aliases */
+  --color-primary-50: #f3f6ff;
+  --color-primary-100: #e8edff;
+  --color-primary-500: #2563eb;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #172554;
+
+  /* Semantic status colors */
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-600: #d97706;
+  --color-amber-700: #b45309;
+
+  --color-rose-50: #fff1f2;
+  --color-rose-100: #ffe4e6;
+  --color-rose-600: #e11d48;
+  --color-rose-700: #be123c;
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Base resets & typography */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: var(--font-sans);
+  background-color: #f5f7fb;
+  color: #0f172a;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  width: 100%;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Permanently eliminate yellow browser autofill in Chrome/Edge */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #0f172a !important;
+  caret-color: #0f172a !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Surface Panel - Crisp & Clean like Login Card */
+.panel {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 1rem !important; /* 16px */
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03) !important;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 1.125rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-body {
+  padding: 1.5rem;
+}
+
+/* Form Inputs */
+.form-input {
+  width: 100%;
+  height: 2.625rem; /* 42px */
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #0f172a;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem; /* 8px */
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.375rem; /* 38px */
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Primary = Royal Blue */
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: 1px solid #1d4ed8;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.btn-primary:active:not(:disabled) {
+  background-color: #1e40af;
+}
+
+/* Navy Button */
+.btn-navy {
+  background-color: #172554;
+  color: #ffffff;
+  border: 1px solid #0f172a;
+}
+
+.btn-navy:hover:not(:disabled) {
+  background-color: #0f172a;
+}
+
+/* Lavender Light Button */
+.btn-lavender {
+  background-color: #e8edff;
+  color: #2563eb;
+  border: 1px solid #dbe4ff;
+  font-weight: 600;
+}
+
+.btn-lavender:hover:not(:disabled) {
+  background-color: #dbe4ff;
+}
+
+/* Secondary = Clean White */
+.btn-secondary {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.btn-danger {
+  background-color: #e11d48;
+  color: #ffffff;
+  border: 1px solid #be123c;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #be123c;
+}
+
+/* Table Styling */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+}
+
+.enterprise-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.enterprise-table th {
+  padding: 0.625rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.enterprise-table td {
+  padding: 0.75rem 1rem;
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.enterprise-table tr:last-child td {
+  border-bottom: none;
+}
+
+.enterprise-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

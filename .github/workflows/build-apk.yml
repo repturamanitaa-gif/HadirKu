@@ -68,6 +68,7 @@ jobs:
         with:
           tag_name: v1.0.0
           name: HadirKu App v1.0.0 (Android APK)
+          make_latest: true
           body: |
             ## Rilis Resmi Aplikasi HadirKu Android
             Silakan unduh file **HadirKu-App-v1.0.apk** di bawah ini untuk menginstal langsung di smartphone Android Anda.

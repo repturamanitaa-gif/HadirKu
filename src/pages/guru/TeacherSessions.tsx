@@ -346,25 +346,14 @@ export default function TeacherSessions() {
   };
 
   // Close Session
-  const handleCloseSession = async (sessionId: string) => {
-    if (!confirm('Apakah Anda yakin ingin menutup sesi absensi ini? Siswa tidak akan bisa scan lagi.')) {
-      return;
+  const handleCloseSession = async (sessionId: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
 
     try {
-      try {
-        await updateDoc(doc(db, 'sessions', sessionId), {
-          status: 'closed',
-        });
-      } catch (e) {
-        console.warn('Update doc closed offline/demo note:', e);
-      }
-
-      const stored = getStoredSessions();
-      saveStoredSessions(
-        stored.map((s) => (s.sessionId === sessionId ? { ...s, status: 'closed' } : s))
-      );
-
+      // 1. Update React state immediately so UI changes without delay
       setSessions((prev) =>
         prev.map((s) => (s.sessionId === sessionId ? { ...s, status: 'closed' } : s))
       );
@@ -372,6 +361,27 @@ export default function TeacherSessions() {
       if (activeSessionView?.sessionId === sessionId) {
         setActiveSessionView((prev) => (prev ? { ...prev, status: 'closed' } : null));
       }
+
+      // 2. Persist to localStorage
+      const stored = getStoredSessions();
+      const updated = stored.map((s) =>
+        s.sessionId === sessionId ? { ...s, status: 'closed' as const } : s
+      );
+      saveStoredSessions(updated);
+
+      // Dispatch global event so any other component/tab syncs immediately
+      window.dispatchEvent(new Event('hadirku_attendance_updated'));
+      window.dispatchEvent(new Event('storage'));
+
+      // 3. Sync to Firestore in background if online
+      try {
+        await updateDoc(doc(db, 'sessions', sessionId), {
+          status: 'closed',
+        });
+      } catch (e) {
+        // demo / offline fallback
+      }
+
       toast.success('Sesi absensi resmi ditutup.', 'Sesi Selesai');
     } catch (err) {
       console.error('Error closing session:', err);
@@ -615,8 +625,9 @@ export default function TeacherSessions() {
                       <span>Tampilkan QR & Live</span>
                     </button>
                     <button
-                      onClick={() => handleCloseSession(session.sessionId)}
-                      className="btn btn-danger text-xs h-8 px-3"
+                      type="button"
+                      onClick={(e) => handleCloseSession(session.sessionId, e)}
+                      className="btn btn-danger text-xs h-8 px-3 cursor-pointer"
                       title="Tutup Sesi Sekarang"
                     >
                       <XCircle className="w-3.5 h-3.5" />

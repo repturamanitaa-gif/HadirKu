@@ -7,9 +7,17 @@ interface ModalProps {
   title: string;
   children: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  description?: string;
 }
 
-export default function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalProps) {
+export default function Modal({
+  isOpen,
+  onClose,
+  title,
+  children,
+  size = 'md',
+  description,
+}: ModalProps) {
   if (!isOpen) return null;
 
   const sizeClasses = {
@@ -20,32 +28,39 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-fade-in">
+      {/* Backdrop with modern blur */}
       <div
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-slate-950/40 backdrop-blur-md transition-all duration-300"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Modal Card */}
+      {/* Modal Dialog Card */}
       <div
-        className={`relative w-full ${sizeClasses[size]} bg-white rounded-xl border border-slate-200 shadow-xl overflow-hidden z-10`}
+        className={`relative w-full ${sizeClasses[size]} bg-white rounded-[24px] border border-slate-200/90 shadow-2xl overflow-hidden z-10 transition-all duration-300 transform scale-100 animate-scale-in`}
+        role="dialog"
+        aria-modal="true"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-slate-50/50">
-          <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
+        <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 bg-slate-50/60">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 tracking-tight">{title}</h3>
+            {description && (
+              <p className="text-xs text-slate-500 mt-0.5">{description}</p>
+            )}
+          </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-all cursor-pointer active:scale-95"
             aria-label="Tutup dialog"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Body */}
-        <div className="p-5 max-h-[75vh] overflow-y-auto">
+        {/* Body with comfortable spacing */}
+        <div className="p-6 max-h-[75vh] overflow-y-auto">
           {children}
         </div>
       </div>

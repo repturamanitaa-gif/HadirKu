@@ -15,8 +15,14 @@ import {
   Search,
   CheckCircle2,
   Calendar,
+  Filter,
+  FileSpreadsheet,
+  AlertCircle,
+  XCircle,
 } from 'lucide-react';
 import StatusBadge from '../../components/ui/StatusBadge';
+import EmptyState from '../../components/ui/EmptyState';
+import { Skeleton } from '../../components/ui/Skeleton';
 import { formatDate, formatTime } from '../../utils/helpers';
 import { getStoredStudentAttendance } from '../../utils/initialData';
 import type { AttendanceRecord } from '../../types';
@@ -107,81 +113,109 @@ export default function StudentHistory() {
   const totalTidakHadir = history.filter((h) => h.status === 'tidak_hadir').length;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="pb-2 border-b border-slate-200">
-        <h1 className="text-xl font-bold text-slate-900 tracking-tight">Riwayat Presensi Pribadi</h1>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Catatan lengkap kehadiran Anda di seluruh sesi pembelajaran yang telah diikuti.
-        </p>
+    <div className="space-y-8 animate-fade-in pb-12">
+      {/* 1. PAGE HEADER */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md w-fit mb-2">
+              <History className="w-3.5 h-3.5" />
+              <span>Rekam Jejak Kehadiran</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Riwayat Presensi Siswa
+            </h1>
+            <p className="text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+              Catatan lengkap riwayat kedatangan pembelajaran Anda yang terverifikasi melalui pemindaian QR code dinamis dan rekap kehadiran guru kelas.
+            </p>
+          </div>
+
+          <div className="text-left sm:text-right shrink-0">
+            <span className="text-xs text-slate-400 block font-medium">Semester Genap</span>
+            <span className="text-sm font-bold text-slate-800">Tahun Ajaran 2026/2027</span>
+          </div>
+        </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="panel p-4">
-          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
-            Total Sesi
-          </span>
-          <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
+      {/* 2. STATS OVERVIEW CARDS */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            <span>Total Presensi</span>
+            <Calendar className="w-4 h-4 text-slate-400" />
+          </div>
+          <div className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
             {history.length}
-          </span>
+          </div>
+          <p className="text-xs text-slate-400 mt-2">Seluruh sesi tercatat</p>
         </div>
-        <div className="panel p-4">
-          <span className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider block">
-            Hadir Tepat Waktu
-          </span>
-          <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
+
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-semibold text-emerald-700 uppercase tracking-wider mb-2">
+            <span>Tepat Waktu</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+          </div>
+          <div className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
             {totalHadir}
-          </span>
+          </div>
+          <p className="text-xs text-slate-400 mt-2">Masuk sebelum batas toleransi</p>
         </div>
-        <div className="panel p-4">
-          <span className="text-[11px] font-semibold text-amber-700 uppercase tracking-wider block">
-            Terlambat
-          </span>
-          <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
+
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-semibold text-amber-700 uppercase tracking-wider mb-2">
+            <span>Terlambat</span>
+            <Clock className="w-4 h-4 text-amber-500" />
+          </div>
+          <div className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
             {totalTerlambat}
-          </span>
+          </div>
+          <p className="text-xs text-slate-400 mt-2">Toleransi 15 menit KBM</p>
         </div>
-        <div className="panel p-4">
-          <span className="text-[11px] font-semibold text-rose-700 uppercase tracking-wider block">
-            Alfa / Izin
-          </span>
-          <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
+
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-xs font-semibold text-rose-700 uppercase tracking-wider mb-2">
+            <span>Alfa / Izin</span>
+            <AlertCircle className="w-4 h-4 text-rose-500" />
+          </div>
+          <div className="text-3xl font-extrabold text-slate-900 tracking-tight tabular-nums">
             {totalTidakHadir}
-          </span>
+          </div>
+          <p className="text-xs text-slate-400 mt-2">Surat dispensasi / izin</p>
         </div>
       </div>
 
-      {/* Filter and Table Panel */}
-      <div className="panel">
-        <div className="panel-header flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          {/* Search Input */}
-          <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+      {/* 3. SEARCH, FILTERS & ATTENDANCE TABLE */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+        {/* Filter Bar with guaranteed non-overlapping search padding */}
+        <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+          {/* Search Box */}
+          <div className="relative w-full md:w-80">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari kelas atau tanggal..."
-              className="w-full h-8 pl-8 pr-3 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600"
+              placeholder="Cari mata pelajaran atau tanggal..."
+              style={{ paddingLeft: '2.75rem', paddingRight: '1rem' }}
+              className="w-full h-11 text-xs bg-slate-50 hover:bg-slate-100/60 border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 transition-all shadow-2xs"
             />
           </div>
 
-          {/* Filter Pills */}
-          <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
+          {/* Filter Status Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
             {[
-              { key: 'all', label: 'Semua' },
-              { key: 'hadir', label: 'Hadir' },
+              { key: 'all', label: 'Semua Status' },
+              { key: 'hadir', label: 'Tepat Waktu' },
               { key: 'terlambat', label: 'Terlambat' },
               { key: 'tidak_hadir', label: 'Tidak Hadir' },
             ].map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setFilterStatus(tab.key)}
-                className={`px-2.5 py-1 rounded text-xs font-medium whitespace-nowrap transition-colors ${
+                className={`px-4 h-10 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   filterStatus === tab.key
-                    ? 'bg-[#2563EB] text-white font-semibold shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-[#2563EB] text-white shadow-xs'
+                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
                 }`}
               >
                 {tab.label}
@@ -190,49 +224,68 @@ export default function StudentHistory() {
           </div>
         </div>
 
-        {/* Table Content */}
-        <div className="table-container border-x-0 border-b-0 rounded-b-xl">
+        {/* Table View */}
+        <div className="overflow-x-auto">
           {loading ? (
-            <div className="py-12 text-center text-xs text-slate-400">
-              Memuat data riwayat presensi...
+            <div className="p-6 space-y-4">
+              <Skeleton className="w-full h-12 rounded-xl" />
+              <Skeleton className="w-full h-12 rounded-xl" />
+              <Skeleton className="w-full h-12 rounded-xl" />
+              <Skeleton className="w-full h-12 rounded-xl" />
             </div>
           ) : filteredHistory.length === 0 ? (
-            <div className="py-12 text-center">
-              <History className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-              <p className="text-xs font-semibold text-slate-700">Tidak ada catatan presensi ditemukan</p>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                {search || filterStatus !== 'all'
-                  ? 'Coba sesuaikan kata kunci pencarian atau filter status.'
-                  : 'Belum ada sesi presensi yang tersimpan untuk akun Anda.'}
-              </p>
+            <div className="py-8">
+              <EmptyState
+                icon={History}
+                title="Tidak Ada Catatan Presensi Ditemukan"
+                description={
+                  search || filterStatus !== 'all'
+                    ? 'Tidak ada data presensi yang cocok dengan filter atau kata kunci pencarian Anda.'
+                    : 'Belum ada riwayat absensi yang tercatat untuk akun siswa ini.'
+                }
+              />
             </div>
           ) : (
-            <table className="enterprise-table">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr>
-                  <th>Kelas</th>
-                  <th>Tanggal Presensi</th>
-                  <th>Waktu Masuk</th>
-                  <th>Metode</th>
-                  <th className="text-right">Status</th>
+                <tr className="bg-slate-50/70 border-b border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider">
+                  <th className="py-4 px-6">Mata Pelajaran & Kelas</th>
+                  <th className="py-4 px-6">Tanggal Presensi</th>
+                  <th className="py-4 px-6">Waktu Masuk</th>
+                  <th className="py-4 px-6">Metode Presensi</th>
+                  <th className="py-4 px-6 text-right">Status Kehadiran</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-100 text-sm">
                 {filteredHistory.map((item, index) => (
-                  <tr key={index}>
-                    <td className="font-semibold text-slate-900">
-                      {item.className}
+                  <tr
+                    key={index}
+                    className="hover:bg-slate-50/70 transition-colors"
+                  >
+                    <td className="py-4.5 px-6 font-bold text-slate-900">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs">
+                          {item.className ? item.className.charAt(0) : 'K'}
+                        </div>
+                        <span>{item.className || 'Kelas X IPA 1'}</span>
+                      </div>
                     </td>
-                    <td className="text-slate-600 text-xs">
+
+                    <td className="py-4.5 px-6 text-slate-600 text-xs font-medium">
                       {formatDate(item.checkedAt)}
                     </td>
-                    <td className="text-slate-600 text-xs tabular-nums">
+
+                    <td className="py-4.5 px-6 text-slate-800 font-mono text-xs font-semibold">
                       {formatTime(item.checkedAt)} WIB
                     </td>
-                    <td className="text-slate-500 text-xs">
-                      {item.source === 'qr_scan' ? 'Scan Kamera QR' : 'Manual Guru'}
+
+                    <td className="py-4.5 px-6 text-slate-500 text-xs">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">
+                        {item.source === 'qr_scan' ? 'Scan QR Kamera' : 'Verifikasi Guru'}
+                      </span>
                     </td>
-                    <td className="text-right">
+
+                    <td className="py-4.5 px-6 text-right">
                       <StatusBadge status={item.status} size="sm" />
                     </td>
                   </tr>

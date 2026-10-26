@@ -21,6 +21,7 @@ import {
   Users,
 } from 'lucide-react';
 import StatusBadge from '../../components/ui/StatusBadge';
+import { useToast } from '../../contexts/ToastContext';
 import { exportToCSV, formatDate, formatTime } from '../../utils/helpers';
 import { getStoredClasses, getStoredSessions } from '../../utils/initialData';
 import type { ClassData, AttendanceSession, AttendanceStatus } from '../../types';
@@ -36,6 +37,7 @@ interface StudentReportRow {
 
 export default function TeacherReports() {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [classes, setClasses] = useState<ClassData[]>([]);
   const [sessions, setSessions] = useState<AttendanceSession[]>([]);
   const [selectedClassId, setSelectedClassId] = useState('');
@@ -273,6 +275,7 @@ export default function TeacherReports() {
     const className = currentClass?.name.replace(/\s+/g, '_') || 'kelas';
 
     exportToCSV(exportData, `Rekap_Absensi_${className}_${dateStr}`);
+    toast.success(`Data rekap kehadiran kelas ${currentClass?.name || ''} berhasil diekspor.`, 'Ekspor Berhasil');
   };
 
   return (

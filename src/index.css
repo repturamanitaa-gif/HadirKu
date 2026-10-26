@@ -26,7 +26,7 @@
   --color-lavender-hover: #dbe4ff;
   --color-lavender-light: #f3f6ff;
 
-  --color-canvas: #f5f7fb;
+  --color-canvas: #f8fafc;
   --color-surface: #ffffff;
   --color-border: #e2e8f0;
 
@@ -69,7 +69,7 @@
 
 html, body {
   font-family: var(--font-sans);
-  background-color: #f5f7fb;
+  background-color: #f8fafc;
   color: #0f172a;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -94,12 +94,12 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Surface Panel - Crisp & Clean like Login Card */
+/* Surface Panel - Modern SaaS Card (Linear / Tremor style) */
 .panel {
   background-color: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 1rem !important; /* 16px */
-  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  border-radius: 1.25rem !important; /* 20px (rounded-2xl) */
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.03) !important;
   overflow: hidden;
 }
 
@@ -118,20 +118,21 @@ input:-webkit-autofill:active {
 /* Form Inputs */
 .form-input {
   width: 100%;
-  height: 2.625rem; /* 42px */
+  height: 2.75rem; /* 44px */
   padding: 0.5rem 0.875rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #0f172a;
   background-color: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem; /* 8px */
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem; /* 12px */
+  transition: all 0.15s ease;
 }
 
 .form-input:focus {
   outline: none;
   border-color: #2563eb;
+  background-color: #ffffff;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
@@ -145,14 +146,18 @@ input:-webkit-autofill:active {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  height: 2.375rem; /* 38px */
-  padding: 0.5rem 0.875rem;
+  height: 2.5rem; /* 40px */
+  padding: 0.5rem 1rem;
   font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  transition: all 0.15s ease;
+  font-weight: 600;
+  border-radius: 0.75rem; /* 12px */
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   white-space: nowrap;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .btn:disabled {
@@ -165,10 +170,12 @@ input:-webkit-autofill:active {
   background-color: #2563eb;
   color: #ffffff;
   border: 1px solid #1d4ed8;
+  box-shadow: 0 1px 2px 0 rgba(37, 99, 235, 0.18);
 }
 
 .btn-primary:hover:not(:disabled) {
   background-color: #1d4ed8;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -180,6 +187,7 @@ input:-webkit-autofill:active {
   background-color: #172554;
   color: #ffffff;
   border: 1px solid #0f172a;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.1);
 }
 
 .btn-navy:hover:not(:disabled) {
@@ -188,14 +196,14 @@ input:-webkit-autofill:active {
 
 /* Lavender Light Button */
 .btn-lavender {
-  background-color: #e8edff;
+  background-color: #eff6ff;
   color: #2563eb;
-  border: 1px solid #dbe4ff;
+  border: 1px solid #dbeafe;
   font-weight: 600;
 }
 
 .btn-lavender:hover:not(:disabled) {
-  background-color: #dbe4ff;
+  background-color: #dbeafe;
 }
 
 /* Secondary = Clean White */
@@ -203,6 +211,7 @@ input:-webkit-autofill:active {
   background-color: #ffffff;
   color: #0f172a;
   border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
 }
 
 .btn-secondary:hover:not(:disabled) {
@@ -215,6 +224,7 @@ input:-webkit-autofill:active {
   background-color: #e11d48;
   color: #ffffff;
   border: 1px solid #be123c;
+  box-shadow: 0 1px 2px 0 rgba(225, 29, 72, 0.15);
 }
 
 .btn-danger:hover:not(:disabled) {
@@ -226,8 +236,9 @@ input:-webkit-autofill:active {
   width: 100%;
   overflow-x: auto;
   border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
+  border-radius: 1.25rem; /* 20px */
   background-color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.02);
 }
 
 .enterprise-table {
@@ -238,7 +249,7 @@ input:-webkit-autofill:active {
 }
 
 .enterprise-table th {
-  padding: 0.625rem 1rem;
+  padding: 0.75rem 1.25rem;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -250,7 +261,7 @@ input:-webkit-autofill:active {
 }
 
 .enterprise-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1.25rem;
   color: #0f172a;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
@@ -261,7 +272,7 @@ input:-webkit-autofill:active {
 }
 
 .enterprise-table tr:hover td {
-  background-color: #f8fafc;
+  background-color: #f8fafc/80;
 }
 
 /* Custom Scrollbar */

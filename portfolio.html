@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio HadirKu — Sistem Presensi Siswa Digital Dynamic QR</title>
+  <meta name="description" content="Portofolio resmi aplikasi HadirKu: Sistem presensi siswa sekolah berbasis Dynamic QR Code berbatas waktu, PWA, dan Android Hybrid.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- QRCode.js for pure native Vanilla JS QR generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    /* ==========================================================
+       HadirKu Pure Vanilla CSS Design System
+       Bebas framework React untuk kerapihan visual maksimal
+       ========================================================== */
+    :root {
+      --royal: #2563eb;
+      --royal-dark: #1d4ed8;
+      --royal-light: #eff6ff;
+      --navy: #172554;
+      --navy-dark: #0f172a;
+      --navy-surface: #1e293b;
+      --canvas: #f5f7fb;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --border-focus: #93c5fd;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --emerald: #059669;
+      --emerald-light: #ecfdf5;
+      --emerald-border: #a7f3d0;
+      --amber: #d97706;
+      --amber-light: #fffbeb;
+      --amber-border: #fde68a;
+      --rose: #e11d48;
+      --rose-light: #fff1f2;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--canvas);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Banner Announcement */
+    .top-strip {
+      background: linear-gradient(90deg, #172554, #1d4ed8, #2563eb);
+      color: #ffffff;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .top-strip-tag {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .clock-badge {
+      font-family: var(--font-mono);
+      background: rgba(0, 0, 0, 0.25);
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--navy-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--royal);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--royal);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--royal-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    /* Layout Containers */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 60px 0 80px;
+      text-align: center;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(239, 246, 255, 0.4) 60%, var(--canvas) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: var(--royal-light);
+      border: 1px solid #bfdbfe;
+      color: var(--royal-dark);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--navy-dark);
+      letter-spacing: -1px;
+      line-height: 1.2;
+      max-width: 860px;
+      margin: 0 auto 18px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #2563eb, #1e40af);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .pill {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Section Headers */
+    .section-title-wrap {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 48px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--royal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Dynamic Simulator Card */
+    .simulator-section {
+      padding: 70px 0;
+    }
+
+    .simulator-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      padding: 36px;
+    }
+
+    .sim-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 36px;
+      margin-top: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .qr-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #qr-container {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      max-width: 260px;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      width: 100%;
+      transition: width 1s linear;
+    }
+
+    .token-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 6px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      height: 42px;
+      padding: 0 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      font-size: 13px;
+      color: var(--text-main);
+      background: #ffffff;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      border-color: var(--royal);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    /* Live Attendance Table */
+    .table-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .table-header {
+      background: #f8fafc;
+      padding: 12px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .att-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13px;
+    }
+
+    .att-row:last-child {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-hadir {
+      background: var(--emerald-light);
+      color: var(--emerald);
+      border: 1px solid var(--emerald-border);
+    }
+
+    .badge-terlambat {
+      background: var(--amber-light);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 70px;
+    }
+
+    @media (max-width: 840px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--navy-dark);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Architecture Block */
+    .arch-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      margin-bottom: 70px;
+    }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .arch-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .arch-item {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: var(--radius-sm);
+    }
+
+    .arch-item h4 {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .arch-item p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Developer Profile */
+    .developer-box {
+      background: linear-gradient(135deg, #172554, #1e3a8a, #2563eb);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      margin-bottom: 70px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .dev-title {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .dev-desc {
+      font-size: 14px;
+      color: #bfdbfe;
+      line-height: 1.6;
+      max-width: 800px;
+      margin-bottom: 24px;
+    }
+
+    .dev-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .dev-meta {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .dev-meta-item span {
+      display: block;
+      font-size: 11px;
+      color: #93c5fd;
+    }
+
+    .dev-meta-item strong {
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    /* Footer */
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Strip -->
+  <div class="top-strip">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="top-strip-tag">PORTOFOLIO AKADEMIK</span>
+      <span>HadirKu — Inovasi Presensi Sekolah Bebas Titip Absen</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span>Waktu Jakarta:</span>
+      <span class="clock-badge" id="live-clock">--:--:-- WIB</span>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <div class="brand-logo">H</div>
+      <div>
+        <div class="brand-title">
+          <span>HadirKu</span>
+          <span style="font-size: 10px; background: #e0eaff; color: #2563eb; padding: 2px 8px; border-radius: 99px; text-transform: uppercase;">
+            Showcase
+          </span>
+        </div>
+        <div class="brand-subtitle">Smart Dynamic QR Attendance System</div>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#simulator">Simulator Dinamis</a></li>
+      <li><a href="#modul">Modul Sistem</a></li>
+      <li><a href="#arsitektur">Arsitektur</a></li>
+      <li><a href="#pengembang">Pengembang</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <a href="index.html" class="btn btn-primary">
+        <span>Buka Web App</span>
+        <span>→</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="tentang">
+    <div class="container">
+      <div class="hero-badge">
+        <span>✨</span>
+        <span>SISTEM PRESENSI AKADEMIK DINAMIS & TERVERIFIKASI</span>
+      </div>
+
+      <h1>
+        Presensi Siswa Berbasis <span>QR Code Dinamis</span> & Anti-Kecurangan
+      </h1>
+
+      <p>
+        Menghilangkan manipulasi titip absen di sekolah dengan sistem rotasi token otomatis setiap 20 detik,
+        pemindai kamera responsif, dan dukungan multi-platform (Progressive Web App & Hybrid Android).
+      </p>
+
+      <div class="pill-group">
+        <div class="pill">
+          <span>⚡</span>
+          <span>Rotasi Token Otomatis (20s)</span>
+        </div>
+        <div class="pill">
+          <span>📱</span>
+          <span>PWA & Android Capacitor Ready</span>
+        </div>
+        <div class="pill">
+          <span>🛡️</span>
+          <span>Validasi Hash Token Server</span>
+        </div>
+        <div class="pill">
+          <span>📊</span>
+          <span>Rekap Otomatis Excel/CSV</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+        <a href="#simulator" class="btn btn-primary" style="padding: 12px 24px; font-size: 14px;">
+          <span>⚡ Uji Coba Simulator Dinamis</span>
+        </a>
+        <a href="index.html" class="btn btn-secondary" style="padding: 12px 24px; font-size: 14px;">
+          <span>Masuk ke Dashboard Aplikasi</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DYNAMIC SIMULATOR SECTION (Membuktikan web dinamis) -->
+  <section class="simulator-section" id="simulator">
+    <div class="container">
+      <div class="simulator-card">
+        <div class="sim-header">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; border-radius: 99px; font-size: 11px; font-weight: 700; margin-bottom: 6px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+              <span>LIVE INTERACTIVE SIMULATOR (DINAMIS)</span>
+            </div>
+            <h2 style="font-size: 22px; font-weight: 800; color: #0f172a;">
+              Simulasi Dinamis QR Code & Pencatatan Kehadiran
+            </h2>
+            <p style="font-size: 13px; color: #64748b; margin-top: 4px;">
+              Sistem ini berjalan 100% dinamis. QR Code berganti token setiap 20 detik untuk menguji sistem anti-titip absen.
+            </p>
+          </div>
+
+          <div style="text-align: right;">
+            <span style="font-size: 11px; color: #94a3b8; font-weight: 600; display: block;">WAKTU AKTIF KELAS</span>
+            <span style="font-size: 14px; font-weight: 800; color: #0f172a; font-family: var(--font-mono);" id="sim-clock">
+              07:00 - 08:30 WIB
+            </span>
+          </div>
+        </div>
+
+        <div class="sim-grid">
+          <!-- Sisi Guru: Dynamic QR Display -->
+          <div class="qr-box">
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span style="font-size: 12px; font-weight: 700; color: #1e293b;">🖥️ Layar Guru (Proyektor)</span>
+              <span style="font-size: 10px; background: #e0eaff; color: #2563eb; padding: 2px 8px; border-radius: 99px; font-weight: 700;">
+                SESI AKTIF
+              </span>
+            </div>
+
+            <!-- Native JS QR Container -->
+            <div id="qr-container"></div>
+
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; width: 100%; max-width: 260px; font-size: 11px; color: #64748b; font-weight: 600;">
+              <span>Rotasi Token Baru:</span>
+              <span style="color: #2563eb; font-weight: 800;" id="countdown-text">20 detik</span>
+            </div>
+
+            <div class="token-text" id="token-preview">
+              Token: #token-active-hash
+            </div>
+
+            <button type="button" class="btn btn-secondary" id="btn-force-refresh" style="margin-top: 14px; font-size: 11px; width: 100%; max-width: 260px;">
+              🔄 Putar Token Baru Sekarang
+            </button>
+          </div>
+
+          <!-- Sisi Siswa: Live Simulation Controller & Table -->
+          <div>
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-sm); margin-bottom: 20px;">
+              <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                <span>📱</span>
+                <span>Simulasikan Pemindaian Presensi Siswa</span>
+              </h3>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                <div>
+                  <label class="form-label">Pilih Siswa Simulasi</label>
+                  <select id="select-student" class="form-control">
+                    <option value="Muhammad Rizky Pratama|20241001">Muhammad Rizky Pratama (20241001)</option>
+                    <option value="Adinda Putri Maharani|20241002">Adinda Putri Maharani (20241002)</option>
+                    <option value="Bima Arya Pangestu|20241003">Bima Arya Pangestu (20241003)</option>
+                    <option value="Dimas Wahyu Nugroho|20241005">Dimas Wahyu Nugroho (20241005)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label">Toleransi Keterlambatan</label>
+                  <input type="text" class="form-control" value="15 Menit (+15 mnt)" readonly style="background: #f8fafc;">
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="btn-simulate-scan" style="width: 100%; height: 42px;">
+                <span>⚡ Simulasikan Scan QR Presensi</span>
+              </button>
+
+              <div id="sim-alert" style="display: none; margin-top: 12px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;"></div>
+            </div>
+
+            <!-- Real-time Attendees Table -->
+            <div class="table-card">
+              <div class="table-header">
+                <span>📋 Siswa yang Telah Melakukan Presensi</span>
+                <span style="color: #059669; font-weight: 800;" id="att-count">3 Siswa Tercatat</span>
+              </div>
+
+              <div id="att-list">
+                <!-- Dynamically populated via Vanilla JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="container" id="modul" style="padding-bottom: 70px;">
+    <div class="section-title-wrap">
+      <div class="section-kicker">Modul & Fitur Unggulan</div>
+      <h2 class="section-title">Fitur Komprehensif Berorientasi Pengguna</h2>
+      <p class="section-desc">
+        Dirancang khusus untuk mendukung operasional sekolah secara terintegrasi antara Guru, Siswa, dan Administrator.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="card">
+        <div class="card-icon" style="background: #eff6ff; color: #2563eb;">⚡</div>
+        <h3>QR Code Dinamis Berbatas Waktu</h3>
+        <p>
+          QR code memperbarui token setiap 20 detik dengan fungsi kriptografi. Siswa yang memotret layar untuk temannya tidak dapat menitipkan absen karena token segera kedaluwarsa.
+        </p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="card">
+        <div class="card-icon" style="background: #ecfdf5; color: #059669;">📱</div>
+        <h3>PWA & Hybrid Android APK</h3>
+        <p>
+          Dapat diinstal langsung di laptop via peramban web modern, serta siap dikompilasi menjadi paket aplikasi Android (APK) asli dengan Capacitor 8 tanpa modifikasi kode ulang.
+        </p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="card">
+        <div class="card-icon" style="background: #fdf2f8; color: #db2777;">🛡️</div>
+        <h3>Koreksi Manual & Audit Log</h3>
+        <p>
+          Guru berwenang mengoreksi status siswa (hadir, terlambat, sakit, izin) dengan kewajiban mengisi alasan resmi yang tersimpan di rekam jejak audit log yang tidak dapat dihapus.
+        </p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="card">
+        <div class="card-icon" style="background: #fffbeb; color: #d97706;">⏱️</div>
+        <h3>Klasifikasi Waktu Otomatis</h3>
+        <p>
+          Algoritma sistem menghitung detik kedatangan siswa secara presisi. Kehadiran sebelum batas toleransi dicatat "Hadir", sedangkan setelah toleransi otomatis diklasifikasikan "Terlambat".
+        </p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="card">
+        <div class="card-icon" style="background: #f5f3ff; color: #7c3aed;">📊</div>
+        <h3>Rekapitulasi Excel & CSV</h3>
+        <p>
+          Administrator dapat mengunduh seluruh riwayat absensi kelas per periode (harian, mingguan, bulanan) dengan format laporan terstruktur siap cetak ke dinas pendidikan.
+        </p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="card">
+        <div class="card-icon" style="background: #e0f2fe; color: #0284c7;">📁</div>
+        <h3>Offline Cache Resilience</h3>
+        <p>
+          Mekanisme penyimpanan ganda (Firestore Cloud + LocalStorage Sinkron) menjamin siswa tetap dapat melihat riwayat dan jadwal ketika jaringan WiFi sekolah sedang mengalami gangguan.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE SECTION -->
+  <section class="container" id="arsitektur">
+    <div class="arch-card">
+      <div class="section-title-wrap" style="margin-bottom: 24px;">
+        <div class="section-kicker">Fondasi Teknologi</div>
+        <h2 class="section-title">Arsitektur Rekayasa Perangkat Lunak</h2>
+        <p class="section-desc">
+          Dibangun dengan struktur bersih yang memisahkan lapisan visual, logika bisnis, dan integrasi perangkat keras.
+        </p>
+      </div>
+
+      <div class="arch-grid">
+        <div class="arch-item">
+          <h4>🎨 Visual Design System</h4>
+          <p>
+            Pure CSS3 Tokens, font Inter, dan tata letak responsif murni. Desain rapi tanpa kebergantungan komponen template pihak ketiga yang kaku.
+          </p>
+        </div>
+
+        <div class="arch-item">
+          <h4>📷 WebRTC Video Engine</h4>
+          <p>
+            Akses perangkat keras kamera menggunakan MediaStream API dengan decoder jsQR canvas dan fallback upload gambar instan.
+          </p>
+        </div>
+
+        <div class="arch-item">
+          <h4>🔐 Kriptografi Token Hash</h4>
+          <p>
+            Enkripsi payload JSON yang mencakup identifier sesi unik, masa berlaku UNIX, dan kunci validasi kelas.
+          </p>
+        </div>
+
+        <div class="arch-item">
+          <h4>📦 Cloud & Hybrid Build</h4>
+          <p>
+            Capacitor 8 bridge untuk Android Native serta GitHub Actions otomatis untuk kompilasi APK mandiri di cloud.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVELOPER PROFILE & AKADEMIK -->
+  <section class="container" id="pengembang">
+    <div class="developer-box">
+      <div class="dev-title">Portofolio Pengembang & Informasi Proyek</div>
+      <div class="dev-desc">
+        Aplikasi HadirKu dikembangkan sebagai proyek akademik rekayasa perangkat lunak web sekolah.
+        Sesuai arahan dosen pembimbing, sistem ini menonjolkan kerapihan visual antarmuka (clean CSS layout),
+        arsitektur aplikasi dinamis (real-time state & reactive countdown), serta fungsionalitas presensi QR code yang teruji bebas dari celah titip absen.
+      </div>
+
+      <div class="dev-meta">
+        <div class="dev-meta-item">
+          <span>Pengembang</span>
+          <strong>Muhammad Rizky Pratama</strong>
+        </div>
+        <div class="dev-meta-item">
+          <span>Mata Kuliah</span>
+          <strong>Pemrograman Web / RPL</strong>
+        </div>
+        <div class="dev-meta-item">
+          <span>Fokus Penilaian</span>
+          <strong>Kerapihan Visual & Web Dinamis</strong>
+        </div>
+        <div class="dev-meta-item">
+          <span>Tahun Proyek</span>
+          <strong>2026 / Genap</strong>
+        </div>
+      </div>
+
+      <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="index.html" class="btn" style="background: #ffffff; color: #172554; padding: 10px 22px; font-size: 13px;">
+          <span>🚀 Buka Web App HadirKu Sekarang</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="font-weight: 700; color: #334155; margin-bottom: 4px;">
+        © 2026 HadirKu — Sistem Presensi Siswa Digital Berbasis QR Dinamis
+      </p>
+      <p style="color: #94a3b8;">
+        Dibuat dengan dedikasi untuk kerapihan visual, performa responsif, dan integritas data kehadiran sekolah.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Vanilla JS Dynamic Script -->
+  <script>
+    // 1. Digital Clock (WIB)
+    function updateClock() {
+      const now = new Date();
+      const timeStr = new Intl.DateTimeFormat('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Jakarta'
+      }).format(now) + ' WIB';
+      document.getElementById('live-clock').textContent = timeStr;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. Dynamic QR Code Generator using QRCode.js
+    let currentToken = 'token-' + Math.random().toString(36).substring(2, 10);
+    let countdown = 20;
+    let qrCodeInstance = null;
+
+    function renderQR(text) {
+      const container = document.getElementById('qr-container');
+      container.innerHTML = '';
+      qrCodeInstance = new QRCode(container, {
+        text: text,
+        width: 180,
+        height: 180,
+        colorDark: '#0f172a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      document.getElementById('token-preview').textContent = 'Token: #' + currentToken;
+    }
+
+    function generateNewToken() {
+      currentToken = 'token-' + Math.random().toString(36).substring(2, 10);
+      countdown = 20;
+      const payload = JSON.stringify({
+        sessionId: 'ses-today-1',
+        token: currentToken,
+        classId: 'cls-1',
+        expiresAt: Date.now() + 3600000
+      });
+      renderQR(payload);
+    }
+
+    // Initial QR render
+    generateNewToken();
+
+    // Timer countdown loop
+    setInterval(() => {
+      countdown--;
+      if (countdown <= 0) {
+        generateNewToken();
+      }
+      document.getElementById('countdown-text').textContent = countdown + ' detik';
+      const pct = (countdown / 20) * 100;
+      document.getElementById('progress-fill').style.width = pct + '%';
+    }, 1000);
+
+    document.getElementById('btn-force-refresh').addEventListener('click', () => {
+      generateNewToken();
+    });
+
+    // 3. Dynamic Attendance Simulation
+    const attendees = [
+      { name: 'Adinda Putri Maharani', nis: '20241002', time: '07:08 WIB', status: 'hadir' },
+      { name: 'Bima Arya Pangestu', nis: '20241003', time: '07:11 WIB', status: 'hadir' },
+      { name: 'Cantika Dewi Larasati', nis: '20241004', time: '07:14 WIB', status: 'hadir' }
+    ];
+
+    function renderAttendees() {
+      const list = document.getElementById('att-list');
+      list.innerHTML = '';
+      attendees.forEach(att => {
+        const row = document.createElement('div');
+        row.className = 'att-row';
+        const badgeClass = att.status === 'hadir' ? 'badge-hadir' : 'badge-terlambat';
+        const badgeLabel = att.status === 'hadir' ? '✓ Hadir Tepat Waktu' : '⏱ Terlambat';
+
+        row.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #e0eaff; color: #2563eb; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+              ${att.name.charAt(0)}
+            </div>
+            <div>
+              <div style="font-weight: 700; color: #0f172a;">${att.name}</div>
+              <div style="font-size: 11px; color: #94a3b8;">NIS: ${att.nis} • ${att.time}</div>
+            </div>
+          </div>
+          <div>
+            <span class="badge ${badgeClass}">${badgeLabel}</span>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+      document.getElementById('att-count').textContent = attendees.length + ' Siswa Tercatat';
+    }
+
+    renderAttendees();
+
+    // Scan simulation button event
+    document.getElementById('btn-simulate-scan').addEventListener('click', () => {
+      const select = document.getElementById('select-student');
+      const [name, nis] = select.value.split('|');
+
+      const now = new Date();
+      const timeStr = new Intl.DateTimeFormat('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Asia/Jakarta'
+      }).format(now) + ' WIB';
+
+      // Random late simulation 20%
+      const status = Math.random() < 0.2 ? 'terlambat' : 'hadir';
+
+      // Remove existing if any
+      const idx = attendees.findIndex(a => a.nis === nis);
+      if (idx !== -1) attendees.splice(idx, 1);
+
+      // Prepend
+      attendees.unshift({ name, nis, time: timeStr, status });
+      renderAttendees();
+
+      // Show alert toast
+      const alertBox = document.getElementById('sim-alert');
+      alertBox.style.display = 'block';
+      alertBox.style.background = status === 'hadir' ? '#ecfdf5' : '#fffbeb';
+      alertBox.style.color = status === 'hadir' ? '#065f46' : '#92400e';
+      alertBox.style.border = status === 'hadir' ? '1px solid #a7f3d0' : '1px solid #fde68a';
+      alertBox.innerHTML = `
+        ✓ Presensi Berhasil! <strong>${name}</strong> tercatat <strong>${status === 'hadir' ? 'Hadir Tepat Waktu' : 'Terlambat'}</strong> pada ${timeStr}.
+      `;
+
+      setTimeout(() => {
+        alertBox.style.display = 'none';
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

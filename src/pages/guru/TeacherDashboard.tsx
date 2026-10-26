@@ -13,6 +13,7 @@ import {
   Plus,
   Calendar,
   FileSpreadsheet,
+  ChevronRight,
 } from 'lucide-react';
 import StatusBadge from '../../components/ui/StatusBadge';
 import MiniCalendar from '../../components/dashboard/MiniCalendar';
@@ -96,145 +97,157 @@ export default function TeacherDashboard() {
 
   const activeSessions = sessions.filter((s) => s.status === 'active');
 
-  return (
-    <div className="space-y-6">
-      {/* Title bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-            Dashboard Guru Pengampu
-          </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Selamat datang, {profile?.name || 'Bapak/Ibu Guru'}. Kelola presensi kelas dan tampilkan QR code.
-          </p>
-        </div>
+  const todayFormatted = new Intl.DateTimeFormat('id-ID', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date());
 
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={() => navigate('/guru/rekap')}
-            className="btn btn-secondary text-xs"
-          >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-slate-500" />
-            <span>Rekap Kehadiran</span>
-          </button>
-          <button
-            onClick={() => navigate('/guru/sesi')}
-            className="btn btn-primary text-xs"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Buat Sesi Presensi</span>
-          </button>
+  return (
+    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-16">
+      {/* 1. HERO HEADER: GURU OVERVIEW (Linear / Vercel style) */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div className="space-y-2.5">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+                {todayFormatted}
+              </span>
+              <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-0.5 rounded-full">
+                Semester Genap 2026/2027
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A]">
+              Dashboard Guru Pengampu
+            </h1>
+            <p className="text-xs sm:text-sm text-[#64748B] max-w-2xl leading-relaxed">
+              Selamat datang, {profile?.name || 'Bapak/Ibu Guru'}. Kelola presensi kelas binaan, buat sesi QR dinamis, dan pantau absensi secara real-time.
+            </p>
+          </div>
+
+          {/* Minimalist Action Buttons */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <button
+              onClick={() => navigate('/guru/sesi')}
+              className="inline-flex items-center gap-2 px-4 h-10 bg-[#2563EB] hover:bg-blue-700 text-white text-xs sm:text-sm font-medium rounded-xl shadow-xs transition-colors duration-200 cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Buat Sesi Presensi</span>
+            </button>
+
+            <button
+              onClick={() => navigate('/guru/rekap')}
+              className="inline-flex items-center gap-2 px-4 h-10 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer shadow-2xs"
+            >
+              <FileSpreadsheet className="w-4 h-4 text-slate-500" />
+              <span>Rekap Kehadiran</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 4 Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="panel p-5">
-          <div className="flex items-start justify-between">
-            <div>
-              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
-                Kelas Diampu
-              </span>
-              <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
-                {classes.length}
-              </span>
+      {/* 2. STATISTIC METRIC CARDS (Tremor / shadcn Card Style) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all duration-200 flex flex-col justify-between min-h-[145px]">
+          <div>
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+              <span>Kelas Diampu</span>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#2563EB] flex items-center justify-center font-semibold text-xs border border-blue-100">
+                <BookOpen className="w-4 h-4" />
+              </div>
             </div>
-            <div className="w-10 h-10 rounded-lg bg-[#E8EDFF] text-[#2563EB] flex items-center justify-center">
-              <BookOpen className="w-5 h-5" />
+            <div className="text-3xl font-bold text-slate-900 tracking-tight mt-1 mb-1 tabular-nums">
+              {classes.length}
             </div>
           </div>
-          <p className="text-[11px] text-slate-500 mt-3 pt-2.5 border-t border-slate-100 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+          <p className="text-xs text-slate-400 mt-2 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             <span>Kelas aktif semester ini</span>
           </p>
         </div>
 
-        <div className="panel p-5">
-          <div className="flex items-start justify-between">
-            <div>
-              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
-                Total Siswa Binaan
-              </span>
-              <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
-                {totalStudentsCount}
-              </span>
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all duration-200 flex flex-col justify-between min-h-[145px]">
+          <div>
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+              <span>Total Siswa Binaan</span>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#2563EB] flex items-center justify-center font-semibold text-xs border border-blue-100">
+                <Users className="w-4 h-4" />
+              </div>
             </div>
-            <div className="w-10 h-10 rounded-lg bg-[#E8EDFF] text-[#2563EB] flex items-center justify-center">
-              <Users className="w-5 h-5" />
+            <div className="text-3xl font-bold text-slate-900 tracking-tight mt-1 mb-1 tabular-nums">
+              {totalStudentsCount}
             </div>
           </div>
-          <p className="text-[11px] text-slate-500 mt-3 pt-2.5 border-t border-slate-100 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+          <p className="text-xs text-slate-400 mt-2 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             <span>Terdaftar di rombel binaan</span>
           </p>
         </div>
 
-        <div className="panel p-5">
-          <div className="flex items-start justify-between">
-            <div>
-              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
-                Sesi Aktif Saat Ini
-              </span>
-              <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
-                {activeSessions.length}
-              </span>
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all duration-200 flex flex-col justify-between min-h-[145px]">
+          <div>
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+              <span>Sesi Aktif Saat Ini</span>
+              <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-semibold text-xs border border-amber-100">
+                <QrCode className="w-4 h-4" />
+              </div>
             </div>
-            <div className="w-10 h-10 rounded-lg bg-[#E8EDFF] text-[#2563EB] flex items-center justify-center">
-              <QrCode className="w-5 h-5" />
+            <div className="text-3xl font-bold text-slate-900 tracking-tight mt-1 mb-1 tabular-nums">
+              {activeSessions.length}
             </div>
           </div>
-          <p className="text-[11px] text-slate-500 mt-3 pt-2.5 border-t border-slate-100 flex items-center gap-1.5">
-            <Clock className="w-3 h-3 text-blue-600" />
+          <p className="text-xs text-slate-400 mt-2 flex items-center gap-1.5">
+            <Clock className="w-3.5 h-3.5 text-blue-600" />
             <span>{activeSessions.length > 0 ? 'Sedang menerima scan' : 'Belum ada sesi aktif'}</span>
           </p>
         </div>
 
-        <div className="panel p-5">
-          <div className="flex items-start justify-between">
-            <div>
-              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
-                Total Riwayat Sesi
-              </span>
-              <span className="text-2xl font-bold text-slate-900 mt-1 block tabular-nums">
-                {sessions.length}
-              </span>
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all duration-200 flex flex-col justify-between min-h-[145px]">
+          <div>
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+              <span>Total Riwayat Sesi</span>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-semibold text-xs border border-emerald-100">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
             </div>
-            <div className="w-10 h-10 rounded-lg bg-[#E8EDFF] text-[#2563EB] flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5" />
+            <div className="text-3xl font-bold text-slate-900 tracking-tight mt-1 mb-1 tabular-nums">
+              {sessions.length}
             </div>
           </div>
-          <p className="text-[11px] text-slate-500 mt-3 pt-2.5 border-t border-slate-100 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+          <p className="text-xs text-slate-400 mt-2 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             <span>Presensi selesai tercatat</span>
           </p>
         </div>
       </div>
 
-      {/* 2-Column Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* 3. MAIN DASHBOARD CONTENT (2 Balanced Columns) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Left Column (8 cols): Sesi Table & Analytics */}
-        <div className="lg:col-span-8 space-y-6">
-          <div className="panel">
-            <div className="panel-header">
+        <div className="lg:col-span-8 space-y-6 sm:space-y-8">
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+            <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold text-slate-900">
                   Sesi Presensi Kelas
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-400 mt-0.5">
                   Daftar sesi absensi yang telah dibuat
                 </p>
               </div>
 
               <button
                 onClick={() => navigate('/guru/sesi')}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                className="text-xs font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer transition-colors"
               >
                 <span>Buka Panel QR & Live</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            <div className="table-container border-x-0 border-b-0 rounded-b-xl">
+            <div className="table-container border-0 rounded-none">
               {loading ? (
                 <div className="py-10 text-center text-xs text-slate-400">
                   Memuat data sesi...
@@ -256,12 +269,12 @@ export default function TeacherDashboard() {
                   <tbody>
                     {sessions.slice(0, 6).map((s) => (
                       <tr key={s.sessionId}>
-                        <td className="font-semibold text-slate-900">
+                        <td className="font-semibold text-slate-900 text-xs">
                           {s.className}
                         </td>
                         <td className="text-slate-600 text-xs">
                           <span className="block font-medium">{formatDate(s.startsAt)}</span>
-                          <span className="block text-slate-400">
+                          <span className="block text-slate-400 font-mono text-[11px] mt-0.5">
                             {formatTime(s.startsAt)} — {formatTime(s.endsAt)}
                           </span>
                         </td>
@@ -271,9 +284,10 @@ export default function TeacherDashboard() {
                         <td className="text-right">
                           <button
                             onClick={() => navigate('/guru/sesi')}
-                            className="btn btn-secondary text-xs h-7 px-2.5 py-0"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 py-1 px-2.5 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
                           >
-                            {s.status === 'active' ? 'Buka QR' : 'Detail'}
+                            <span>{s.status === 'active' ? 'Buka QR' : 'Detail'}</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
                           </button>
                         </td>
                       </tr>
@@ -285,7 +299,7 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Charts */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             <AttendanceTrendsChart />
             <AttendanceDonutChart
               hadir={Math.max(16, Math.round(totalStudentsCount * 0.88))}
@@ -296,7 +310,7 @@ export default function TeacherDashboard() {
         </div>
 
         {/* Right Column (4 cols) */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="lg:col-span-4 space-y-6 sm:space-y-8">
           <MiniCalendar />
 
           <AttendanceProgressWidget
@@ -307,30 +321,33 @@ export default function TeacherDashboard() {
           />
 
           {/* Classes taught */}
-          <div className="panel p-5">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
-              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                Kelas yang Diampu
-              </h3>
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900">
+                  Kelas yang Diampu
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">Rombel pengampuan aktif</p>
+              </div>
               <button
                 onClick={() => navigate('/guru/kelas')}
-                className="text-xs text-blue-600 hover:underline font-medium"
+                className="text-xs text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
               >
                 Lihat Semua
               </button>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {classes.slice(0, 4).map((c) => (
                 <div
                   key={c.classId}
-                  className="p-2.5 rounded-lg border border-slate-200 bg-white flex items-center justify-between text-xs"
+                  className="p-3 bg-slate-50/50 rounded-xl border border-slate-100 flex items-center justify-between hover:bg-slate-50 transition-colors"
                 >
                   <div>
-                    <span className="font-semibold text-slate-800 block">{c.name}</span>
-                    <span className="text-[11px] text-slate-400">T.A. {c.academicYear}</span>
+                    <span className="font-semibold text-xs text-slate-800 block">{c.name}</span>
+                    <span className="text-[11px] text-slate-400 mt-0.5 block">T.A. {c.academicYear}</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/70">
                     Aktif
                   </span>
                 </div>

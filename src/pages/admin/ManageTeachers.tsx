@@ -5,6 +5,7 @@ import {
 } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../lib/firebase';
+import { useToast } from '../../contexts/ToastContext';
 import { Search, Plus, UserCheck, UserX, Loader2, GraduationCap, ChevronRight } from 'lucide-react';
 import Modal from '../../components/ui/Modal';
 import StatusBadge from '../../components/ui/StatusBadge';
@@ -12,6 +13,7 @@ import { getStoredTeachers, saveStoredTeachers } from '../../utils/initialData';
 import type { UserProfile } from '../../types';
 
 export default function ManageTeachers() {
+  const { toast } = useToast();
   const [teachers, setTeachers] = useState<UserProfile[]>([]);
   const [filtered, setFiltered] = useState<UserProfile[]>([]);
   const [search, setSearch] = useState('');
@@ -105,6 +107,7 @@ export default function ManageTeachers() {
       saveStoredTeachers(updated);
       setForm({ name: '', email: '', password: '' });
       setShowModal(false);
+      toast.success(`Akun guru ${newTeacher.name} berhasil dibuat!`, 'Berhasil');
     } finally {
       setFormLoading(false);
     }
@@ -115,6 +118,7 @@ export default function ManageTeachers() {
     setTeachers(updated);
     setFiltered(updated);
     saveStoredTeachers(updated);
+    toast.info(`Status akun berhasil diubah menjadi ${!currentActive ? 'Aktif' : 'Nonaktif'}.`, 'Status Diperbarui');
 
     try {
       await updateDoc(doc(db, 'users', uid), { active: !currentActive });

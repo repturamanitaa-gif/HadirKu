@@ -5,6 +5,7 @@ import {
 } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../lib/firebase';
+import { useToast } from '../../contexts/ToastContext';
 import { Search, Plus, Loader2, Users, ChevronRight, ChevronLeft, UserCheck, UserX } from 'lucide-react';
 import Modal from '../../components/ui/Modal';
 import StatusBadge from '../../components/ui/StatusBadge';
@@ -12,6 +13,7 @@ import { getStoredStudents, saveStoredStudents } from '../../utils/initialData';
 import type { UserProfile } from '../../types';
 
 export default function ManageStudents() {
+  const { toast } = useToast();
   const [students, setStudents] = useState<UserProfile[]>([]);
   const [filtered, setFiltered] = useState<UserProfile[]>([]);
   const [search, setSearch] = useState('');
@@ -121,6 +123,7 @@ export default function ManageStudents() {
       saveStoredStudents(updated);
       setForm({ name: '', email: '', nis: '', className: 'X IPA 1', password: '' });
       setShowModal(false);
+      toast.success(`Data siswa ${newStudent.name} berhasil ditambahkan!`, 'Berhasil');
     } finally {
       setFormLoading(false);
     }
@@ -131,6 +134,7 @@ export default function ManageStudents() {
     setStudents(updated);
     setFiltered(updated);
     saveStoredStudents(updated);
+    toast.info(`Status siswa diubah menjadi ${!currentActive ? 'Aktif' : 'Nonaktif'}.`, 'Status Diperbarui');
 
     if (detailStudent && detailStudent.uid === uid) {
       setDetailStudent({ ...detailStudent, active: !currentActive });

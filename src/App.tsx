@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AppLayout from './components/layout/AppLayout';
 import LoadingScreen from './components/ui/LoadingScreen';
 
 // Pages
 import LoginPage from './pages/LoginPage';
+import PortfolioPage from './pages/PortfolioPage';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -42,11 +44,14 @@ function RootRedirect() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <ToastProvider>
+      <AuthProvider>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
-          {/* Public Route */}
+          {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/portofolio" element={<PortfolioPage />} />
+          <Route path="/portfolio" element={<Navigate to="/portofolio" replace />} />
           <Route path="/" element={<RootRedirect />} />
 
           {/* Admin Routes */}
@@ -99,5 +104,6 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </ToastProvider>
   );
 }

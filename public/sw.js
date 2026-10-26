@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hadirku-cache-v3';
+const CACHE_NAME = 'hadirku-cache-v4';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -37,6 +37,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = request.url;
+
+  // Always fetch fresh over network during local development
+  if (url.includes('localhost') || url.includes('127.0.0.1')) {
+    return;
+  }
 
   // Only handle GET requests
   if (request.method !== 'GET') return;

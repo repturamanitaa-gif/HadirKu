@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../contexts/ToastContext';
 import {
   Eye,
   EyeOff,
@@ -13,10 +14,14 @@ import {
   QrCode,
   UserCheck,
   Download,
+  GraduationCap,
+  Sparkles,
+  CheckCircle2,
 } from 'lucide-react';
 import DownloadAppModal from '../components/ui/DownloadAppModal';
 
 export default function LoginPage() {
+  const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +54,6 @@ export default function LoginPage() {
         setShowInstallModal(true);
       }
     } else {
-      // Fallback modal with guide
       setShowInstallModal(true);
     }
   };
@@ -59,7 +63,11 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (profile) {
-      const routes: Record<string, string> = { admin: '/admin', guru: '/guru', siswa: '/siswa' };
+      const routes = {
+        admin: '/admin',
+        guru: '/guru',
+        siswa: '/siswa',
+      };
       navigate(routes[profile.role] || '/login', { replace: true });
     }
   }, [profile, navigate]);
@@ -103,454 +111,222 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await loginAsDemo(role);
+      toast.success(`Berhasil masuk sebagai demo ${role.toUpperCase()}`, 'Autentikasi Berhasil');
     } catch (e) {
       console.error(e);
+      toast.error('Gagal masuk sebagai akun demo.', 'Kesalahan');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100vw',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#F3F6FB',
-        padding: '24px 16px',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      }}
-    >
-      {/* Brand Identity */}
-      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <div
-          style={{
-            width: '48px',
-            height: '48px',
-            margin: '0 auto 12px',
-            backgroundColor: '#2563EB',
-            borderRadius: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#FFFFFF',
-            fontWeight: 800,
-            fontSize: '22px',
-            boxShadow: '0 8px 16px -4px rgba(37, 99, 235, 0.35)',
-          }}
-        >
-          H
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.5px' }}>
-            HadirKu
-          </span>
-          <span
-            style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              color: '#2563EB',
-              backgroundColor: '#E0EAFF',
-              padding: '2px 8px',
-              borderRadius: '999px',
-              letterSpacing: '0.5px',
-              textTransform: 'uppercase',
-            }}
-          >
-            Sekolah
-          </span>
-        </div>
-        <p style={{ fontSize: '13px', color: '#64748B', marginTop: '4px' }}>
-          Sistem Presensi Siswa Digital Berbasis QR
-        </p>
-      </div>
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#F8FAFC] p-4 sm:p-6 relative overflow-hidden font-sans antialiased">
+      {/* Background Subtle Gradient Glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Main Card */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '420px',
-          backgroundColor: '#FFFFFF',
-          borderRadius: '20px',
-          border: '1px solid #E2E8F0',
-          boxShadow: '0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03)',
-          padding: '32px 28px',
-        }}
-      >
-        <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#0F172A', margin: 0 }}>
-            Masuk ke Akun
-          </h1>
-          <p style={{ fontSize: '13px', color: '#64748B', marginTop: '6px', margin: '6px 0 0' }}>
-            Silakan masukkan email dan kata sandi Anda
+      {/* Main Container Card */}
+      <div className="w-full max-w-md relative z-10 space-y-6">
+        {/* Brand Header */}
+        <div className="text-center space-y-2">
+          <div className="w-12 h-12 mx-auto rounded-2xl bg-[#2563EB] text-white flex items-center justify-center font-bold text-xl shadow-md shadow-blue-500/25">
+            <GraduationCap className="w-6 h-6" />
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-2xl font-extrabold text-slate-900 tracking-tight">HadirKu</span>
+            <span className="text-[10px] font-bold text-[#2563EB] bg-blue-50 border border-blue-200/80 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              SaaS v1.0
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 max-w-xs mx-auto">
+            Sistem Presensi Siswa Digital Berbasis Dynamic QR Code
           </p>
         </div>
 
-        {error && (
-          <div
-            style={{
-              marginBottom: '20px',
-              padding: '12px 14px',
-              backgroundColor: '#FEF2F2',
-              border: '1px solid #FECACA',
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              color: '#B91C1C',
-              fontSize: '12px',
-            }}
-          >
-            <AlertCircle size={16} color="#DC2626" style={{ flexShrink: 0 }} />
-            <span>{error}</span>
+        {/* Authentication Card (24px rounded, soft shadow, thin border) */}
+        <div className="bg-white rounded-[24px] border border-slate-200/90 shadow-xl p-7 sm:p-9 space-y-6 transition-all">
+          <div className="space-y-1">
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+              Masuk ke Portal
+            </h1>
+            <p className="text-xs text-slate-500">
+              Gunakan akun institusi sekolah Anda untuk melanjutkan.
+            </p>
           </div>
-        )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div>
-            <label
-              style={{
-                display: 'block',
-                fontSize: '12px',
-                fontWeight: 600,
-                color: '#334155',
-                marginBottom: '6px',
-              }}
-            >
-              Email Akun
-            </label>
-            <div style={{ position: 'relative' }}>
-              <div
-                style={{
-                  position: 'absolute',
-                  left: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  pointerEvents: 'none',
-                  color: '#94A3B8',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <Mail size={16} />
-              </div>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="nama@sekolah.id"
-                style={{
-                  width: '100%',
-                  height: '44px',
-                  padding: '0 14px 0 38px',
-                  backgroundColor: '#FFFFFF',
-                  border: '1.5px solid #CBD5E1',
-                  borderRadius: '12px',
-                  fontSize: '13px',
-                  color: '#0F172A',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
+          {error && (
+            <div className="p-3.5 bg-rose-50 border border-rose-200/90 rounded-xl flex items-center gap-2.5 text-xs text-rose-700 animate-shake">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+              <span>{error}</span>
             </div>
-          </div>
+          )}
 
-          <div>
-            <label
-              style={{
-                display: 'block',
-                fontSize: '12px',
-                fontWeight: 600,
-                color: '#334155',
-                marginBottom: '6px',
-              }}
-            >
-              Kata Sandi
-            </label>
-            <div style={{ position: 'relative' }}>
-              <div
-                style={{
-                  position: 'absolute',
-                  left: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  pointerEvents: 'none',
-                  color: '#94A3B8',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <Lock size={16} />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Alamat Email
+              </label>
+              <div className="relative">
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="nama@sekolah.sch.id"
+                  style={{ paddingLeft: '2.5rem' }}
+                  className="form-input text-xs"
+                />
               </div>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                style={{
-                  width: '100%',
-                  height: '44px',
-                  padding: '0 40px 0 38px',
-                  backgroundColor: '#FFFFFF',
-                  border: '1.5px solid #CBD5E1',
-                  borderRadius: '12px',
-                  fontSize: '13px',
-                  color: '#0F172A',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Kata Sandi
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
+                  className="form-input text-xs"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  aria-label="Tampilkan kata sandi"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Remember Me & Forgot Password */}
+            <div className="flex items-center justify-between text-xs pt-1">
+              <label className="flex items-center gap-2 cursor-pointer text-slate-600 font-medium">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 accent-blue-600 cursor-pointer"
+                />
+                <span>Ingat saya</span>
+              </label>
+
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: 'absolute',
-                  right: '10px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  color: '#94A3B8',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '4px',
-                }}
-                tabIndex={-1}
+                onClick={() =>
+                  toast.info(
+                    'Untuk mereset kata sandi akun Anda, silakan hubungi Administrator sekolah.',
+                    'Lupa Kata Sandi'
+                  )
+                }
+                className="text-xs font-semibold text-[#2563EB] hover:text-blue-700 cursor-pointer"
               >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                Lupa kata sandi?
+              </button>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-primary w-full h-11 text-xs font-semibold rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Memverifikasi Akun...</span>
+                </>
+              ) : (
+                <>
+                  <span>Masuk Sekarang</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Quick Demo Section (3 Roles) */}
+          <div className="pt-4 border-t border-slate-100">
+            <span className="block text-center text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">
+              Atau Uji Coba Langsung (1-Click Demo)
+            </span>
+
+            <div className="grid grid-cols-3 gap-2.5">
+              {/* Admin Button */}
+              <button
+                type="button"
+                onClick={() => handleQuickDemo('admin')}
+                className="p-3 bg-slate-50 hover:bg-blue-50/60 border border-slate-200/90 hover:border-blue-300 rounded-[16px] text-center transition-all cursor-pointer group active:scale-98"
+              >
+                <div className="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-blue-100 text-[#2563EB] flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <span className="block text-xs font-bold text-slate-900 group-hover:text-blue-700">Admin</span>
+                <span className="block text-[10px] text-slate-400">Master Data</span>
+              </button>
+
+              {/* Guru Button */}
+              <button
+                type="button"
+                onClick={() => handleQuickDemo('guru')}
+                className="p-3 bg-slate-50 hover:bg-blue-50/60 border border-slate-200/90 hover:border-blue-300 rounded-[16px] text-center transition-all cursor-pointer group active:scale-98"
+              >
+                <div className="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <QrCode className="w-4 h-4" />
+                </div>
+                <span className="block text-xs font-bold text-slate-900 group-hover:text-blue-700">Guru</span>
+                <span className="block text-[10px] text-slate-400">Sesi &amp; QR</span>
+              </button>
+
+              {/* Siswa Button */}
+              <button
+                type="button"
+                onClick={() => handleQuickDemo('siswa')}
+                className="p-3 bg-slate-50 hover:bg-blue-50/60 border border-slate-200/90 hover:border-blue-300 rounded-[16px] text-center transition-all cursor-pointer group active:scale-98"
+              >
+                <div className="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <UserCheck className="w-4 h-4" />
+                </div>
+                <span className="block text-xs font-bold text-slate-900 group-hover:text-blue-700">Siswa</span>
+                <span className="block text-[10px] text-slate-400">Scan Presensi</span>
               </button>
             </div>
           </div>
-
-          {/* Options */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: '#64748B' }}>
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                style={{ width: '15px', height: '15px', accentColor: '#2563EB', cursor: 'pointer' }}
-              />
-              <span>Ingat saya</span>
-            </label>
-            <button
-              type="button"
-              onClick={() => alert('Untuk reset kata sandi, hubungi admin sekolah.')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#2563EB',
-                cursor: 'pointer',
-                fontWeight: 600,
-                fontSize: '12px',
-              }}
-            >
-              Lupa kata sandi?
-            </button>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              width: '100%',
-              height: '44px',
-              backgroundColor: '#2563EB',
-              color: '#FFFFFF',
-              border: 'none',
-              borderRadius: '12px',
-              fontSize: '13px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1,
-              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
-              marginTop: '4px',
-            }}
-          >
-            {loading ? (
-              <>
-                <Loader2 size={16} className="animate-spin" />
-                <span>Memproses...</span>
-              </>
-            ) : (
-              <>
-                <span>Masuk Sekarang</span>
-                <ArrowRight size={16} />
-              </>
-            )}
-          </button>
-        </form>
-
-        {/* Quick Demo Section */}
-        <div style={{ marginTop: '28px', paddingTop: '20px', borderTop: '1px solid #F1F5F9' }}>
-          <span
-            style={{
-              display: 'block',
-              textAlign: 'center',
-              fontSize: '11px',
-              fontWeight: 700,
-              color: '#94A3B8',
-              letterSpacing: '0.5px',
-              textTransform: 'uppercase',
-              marginBottom: '12px',
-            }}
-          >
-            Atau Coba Masuk Sebagai (Demo)
-          </span>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-            {/* Admin Button */}
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('admin')}
-              style={{
-                padding: '10px 6px',
-                backgroundColor: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                borderRadius: '12px',
-                textAlign: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  margin: '0 auto 6px',
-                  backgroundColor: '#EFF6FF',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#2563EB',
-                }}
-              >
-                <ShieldCheck size={16} />
-              </div>
-              <span style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#0F172A' }}>Admin</span>
-              <span style={{ display: 'block', fontSize: '10px', color: '#64748B' }}>Master Data</span>
-            </button>
-
-            {/* Guru Button */}
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('guru')}
-              style={{
-                padding: '10px 6px',
-                backgroundColor: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                borderRadius: '12px',
-                textAlign: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  margin: '0 auto 6px',
-                  backgroundColor: '#EFF6FF',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#2563EB',
-                }}
-              >
-                <QrCode size={16} />
-              </div>
-              <span style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#0F172A' }}>Guru</span>
-              <span style={{ display: 'block', fontSize: '10px', color: '#64748B' }}>Buka Sesi QR</span>
-            </button>
-
-            {/* Siswa Button */}
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('siswa')}
-              style={{
-                padding: '10px 6px',
-                backgroundColor: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                borderRadius: '12px',
-                textAlign: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  margin: '0 auto 6px',
-                  backgroundColor: '#EFF6FF',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#2563EB',
-                }}
-              >
-                <UserCheck size={16} />
-              </div>
-              <span style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#0F172A' }}>Siswa</span>
-              <span style={{ display: 'block', fontSize: '10px', color: '#64748B' }}>Scan Absensi</span>
-            </button>
-          </div>
         </div>
-      </div>
 
-      {/* Install App Button on Login Screen */}
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <button
-          type="button"
-          onClick={handleDirectInstall}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #CBD5E1',
-            borderRadius: '999px',
-            color: '#1E293B',
-            fontSize: '12px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <div
-            style={{
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
-              backgroundColor: '#EFF6FF',
-              color: '#2563EB',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+        {/* Portofolio & Install PWA Pill Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+          <button
+            type="button"
+            onClick={() => navigate('/portofolio')}
+            className="inline-flex items-center gap-2 px-4 h-9 bg-blue-50 hover:bg-blue-100 border border-blue-200/80 rounded-full text-[#2563EB] text-xs font-semibold shadow-2xs transition-all cursor-pointer"
           >
-            <Download size={12} strokeWidth={2.5} />
-          </div>
-          <span>Instal Aplikasi HadirKu</span>
-        </button>
-      </div>
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+            <span>Lihat Showcase Portofolio</span>
+            <ArrowRight className="w-3 h-3 text-blue-500" />
+          </button>
 
-      {/* Footer */}
-      <div style={{ marginTop: '16px', textAlign: 'center', fontSize: '12px', color: '#94A3B8' }}>
-        © 2026 HadirKu • Sistem Presensi Sekolah Digital
+          <button
+            type="button"
+            onClick={handleDirectInstall}
+            className="inline-flex items-center gap-2 px-4 h-9 bg-white hover:bg-slate-50 border border-slate-200 rounded-full text-slate-700 text-xs font-medium shadow-2xs transition-all cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <span>Pasang Aplikasi (PWA)</span>
+          </button>
+        </div>
+
+        {/* Footer Copyright */}
+        <div className="text-center text-xs text-slate-400 pt-2">
+          &copy; 2026 HadirKu &bull; Sistem Presensi Sekolah Digital
+        </div>
       </div>
 
       {/* PWA Download Modal */}

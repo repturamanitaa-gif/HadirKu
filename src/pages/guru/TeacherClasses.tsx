@@ -155,116 +155,50 @@ export default function TeacherClasses() {
           ))}
         </div>
       ) : filteredClasses.length === 0 ? (
-        <div className="panel p-12 text-center">
+        <div className="bg-white rounded-[20px] border border-slate-200/90 p-12 text-center shadow-xs">
           <FolderOpen className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-          <h3 className="font-semibold text-slate-800 text-base">Tidak ada kelas ditemukan</h3>
+          <h3 className="font-bold text-slate-900 text-base">Tidak ada kelas ditemukan</h3>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
             {search ? 'Coba ubah kata kunci pencarian Anda.' : 'Anda belum ditugaskan mengampu kelas apapun saat ini.'}
           </p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredClasses.map((cls) => (
             <div
               key={cls.classId}
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '16px',
-                border: '1px solid #E2E8F0',
-                padding: '24px',
-                boxShadow: '0 4px 12px rgba(15, 23, 42, 0.04)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'all 0.2s ease',
-              }}
+              className="bg-white rounded-[20px] border border-slate-200/90 p-6 shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col justify-between"
             >
               <div>
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <div
-                    style={{
-                      width: '44px',
-                      height: '44px',
-                      borderRadius: '12px',
-                      backgroundColor: '#EFF6FF',
-                      color: '#2563EB',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <BookOpen size={20} />
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center border border-blue-100">
+                    <BookOpen className="w-5 h-5" />
                   </div>
-                  <span
-                    style={{
-                      padding: '4px 10px',
-                      borderRadius: '999px',
-                      backgroundColor: '#F1F5F9',
-                      color: '#475569',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                    }}
-                  >
+                  <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">
                     T.A. {cls.academicYear}
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.3px' }}>
+                <h3 className="text-lg font-bold text-slate-900 tracking-tight">
                   {cls.name}
                 </h3>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Calendar size={14} color="#94A3B8" />
+                <p className="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
                   <span>Wali Kelas: {cls.homeroomTeacher || 'Belum Ditentukan'}</span>
                 </p>
               </div>
 
-              <div
-                style={{
-                  marginTop: '20px',
-                  paddingTop: '16px',
-                  borderTop: '1px solid #F1F5F9',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '4px 10px',
-                    borderRadius: '999px',
-                    backgroundColor: '#ECFDF5',
-                    color: '#047857',
-                    border: '1px solid #A7F3D0',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                  }}
-                >
-                  <CheckCircle2 size={13} color="#059669" />
+              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70 text-xs font-semibold">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   Kelas Aktif
                 </span>
                 <button
                   onClick={() => handleOpenMembers(cls)}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '10px',
-                    border: '1px solid #E2E8F0',
-                    backgroundColor: '#FFFFFF',
-                    color: '#0F172A',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
+                  className="inline-flex items-center gap-1.5 px-4 h-9 bg-[#2563EB] hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-2xs transition-all cursor-pointer active:scale-98"
                 >
-                  <Users size={14} color="#2563EB" />
-                  <span>Lihat Anggota</span>
-                  <ChevronRight size={14} color="#94A3B8" />
+                  <Users className="w-3.5 h-3.5" />
+                  <span>Daftar Siswa</span>
                 </button>
               </div>
             </div>

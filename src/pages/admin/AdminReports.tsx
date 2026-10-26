@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, ChevronRight, CheckCircle2, Clock, AlertCircle, FileSpreadsheet } from 'lucide-react';
+import { useToast } from '../../contexts/ToastContext';
 import { exportToCSV } from '../../utils/helpers';
 import { getStoredClasses } from '../../utils/initialData';
 
 export default function AdminReports() {
+  const { toast } = useToast();
   const classes = getStoredClasses();
   const [period, setPeriod] = useState('Oktober 2026');
   const [selectedClass, setSelectedClass] = useState('all');
@@ -45,6 +47,7 @@ export default function AdminReports() {
       Periode: period,
     }));
     exportToCSV(rows, `Laporan_Rekap_Presensi_${period.replace(/\s+/g, '_')}`);
+    toast.success('Berkas rekapitulasi CSV berhasil diunduh ke perangkat Anda.', 'Ekspor Selesai');
   };
 
   return (

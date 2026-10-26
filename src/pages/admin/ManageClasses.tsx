@@ -4,12 +4,14 @@ import {
   collection, getDocs, doc, addDoc, updateDoc, serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import { useToast } from '../../contexts/ToastContext';
 import { Search, Plus, Users, Loader2, ChevronRight, ChevronLeft, X, BookOpen } from 'lucide-react';
 import Modal from '../../components/ui/Modal';
 import { getStoredClasses, saveStoredClasses, getStoredTeachers, getStoredStudents } from '../../utils/initialData';
 import type { ClassData, UserProfile } from '../../types';
 
 export default function ManageClasses() {
+  const { toast } = useToast();
   const [classes, setClasses] = useState<ClassData[]>([]);
   const [filtered, setFiltered] = useState<ClassData[]>([]);
   const [search, setSearch] = useState('');
@@ -131,6 +133,7 @@ export default function ManageClasses() {
         studentCount: 30,
         academicYear: '2026/2027',
       });
+      toast.success(`Kelas ${newClass.name} berhasil ditambahkan!`, 'Berhasil');
     } catch {
       const newClass: ClassData = {
         classId: 'cls-' + Date.now(),
@@ -154,6 +157,7 @@ export default function ManageClasses() {
         studentCount: 30,
         academicYear: '2026/2027',
       });
+      toast.success(`Kelas ${newClass.name} berhasil disimpan!`, 'Berhasil');
     } finally {
       setFormLoading(false);
     }

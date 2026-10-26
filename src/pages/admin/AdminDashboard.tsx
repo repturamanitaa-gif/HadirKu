@@ -138,105 +138,152 @@ export default function AdminDashboard() {
 
   const displayName = profile?.name || 'Budi Santoso';
 
+  const todayFormatted = new Intl.DateTimeFormat('id-ID', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date());
+
   // Stat cards configuration
   const statCards = [
     {
       label: 'Total Siswa Terdaftar',
       value: stats.totalStudents || 245,
-      icon: <Users className="w-5 h-5" />,
-      iconBg: 'bg-[#E8EDFF]',
-      iconBorder: 'border-[#DBE4FF]',
+      icon: <Users className="w-4 h-4" />,
+      iconBg: 'bg-blue-50',
+      iconBorder: 'border-blue-100',
       iconColor: 'text-[#2563EB]',
       sub: (
         <span className="text-emerald-700 flex items-center gap-1 font-medium">
           <TrendingUp className="w-3.5 h-3.5" />
-          <span>12 dari semester lalu</span>
+          <span>+12 dari semester lalu</span>
         </span>
       ),
     },
     {
       label: 'Total Guru Pengampu',
       value: stats.totalTeachers || 38,
-      icon: <GraduationCap className="w-5 h-5" />,
-      iconBg: 'bg-[#E8EDFF]',
-      iconBorder: 'border-[#DBE4FF]',
+      icon: <GraduationCap className="w-4 h-4" />,
+      iconBg: 'bg-blue-50',
+      iconBorder: 'border-blue-100',
       iconColor: 'text-[#2563EB]',
       sub: (
         <span className="text-emerald-700 flex items-center gap-1 font-medium">
           <TrendingUp className="w-3.5 h-3.5" />
-          <span>2 dari semester lalu</span>
+          <span>+2 dari semester lalu</span>
         </span>
       ),
     },
     {
       label: 'Rombel / Kelas Aktif',
       value: stats.totalClasses || 12,
-      icon: <BookOpen className="w-5 h-5" />,
-      iconBg: 'bg-[#E8EDFF]',
-      iconBorder: 'border-[#DBE4FF]',
-      iconColor: 'text-[#172554]',
+      icon: <BookOpen className="w-4 h-4" />,
+      iconBg: 'bg-indigo-50',
+      iconBorder: 'border-indigo-100',
+      iconColor: 'text-indigo-600',
       sub: (
-        <span className="text-[#64748B]">
-          Semua kelas aktif
+        <span className="text-slate-500">
+          Semua rombel aktif
         </span>
       ),
     },
     {
       label: 'Sesi Presensi Hari Ini',
       value: stats.todayAttendance || 24,
-      icon: <CalendarCheck className="w-5 h-5" />,
+      icon: <CalendarCheck className="w-4 h-4" />,
       iconBg: 'bg-amber-50',
-      iconBorder: 'border-amber-200',
+      iconBorder: 'border-amber-100',
       iconColor: 'text-amber-600',
       sub: (
         <span className="text-emerald-700 flex items-center gap-1 font-medium">
           <TrendingUp className="w-3.5 h-3.5" />
-          <span>3 dari kemarin</span>
+          <span>+3 dari kemarin</span>
         </span>
       ),
     },
   ];
 
   return (
-    <div className="space-y-5">
-      {/* Greeting Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-[#0F172A] tracking-tight">
-            Selamat Datang, {displayName} 👋
-          </h1>
-          <p className="text-sm text-[#64748B] mt-0.5">
-            Kelola presensi siswa, guru, dan data akademik sekolah dengan mudah.
-          </p>
+    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-16">
+      {/* 1. HERO HEADER: ADMINISTRATOR OVERVIEW (Linear / Vercel style) */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div className="space-y-2.5">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+                {todayFormatted}
+              </span>
+              <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-0.5 rounded-full">
+                Tahun Ajaran 2026/2027 (Genap)
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A]">
+              Selamat Datang, {displayName}
+            </h1>
+            <p className="text-xs sm:text-sm text-[#64748B] max-w-2xl leading-relaxed">
+              Pusat kendali administrasi presensi digital, pemantauan rombel, dan verifikasi kehadiran sekolah secara real-time.
+            </p>
+          </div>
+
+          {/* Minimalist Action Buttons */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <button
+              onClick={() => navigate('/admin/siswa')}
+              className="inline-flex items-center gap-2 px-4 h-10 bg-[#2563EB] hover:bg-blue-700 text-white text-xs sm:text-sm font-medium rounded-xl shadow-xs transition-colors duration-200 cursor-pointer"
+            >
+              <Users className="w-4 h-4" />
+              <span>Kelola Siswa</span>
+            </button>
+
+            <button
+              onClick={() => navigate('/admin/laporan')}
+              className="inline-flex items-center gap-2 px-4 h-10 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer shadow-2xs"
+            >
+              <span>Laporan Rekap</span>
+              <ArrowRight className="w-4 h-4 text-slate-400" />
+            </button>
+
+            <button
+              onClick={fetchAdminData}
+              disabled={loading}
+              className="inline-flex items-center justify-center w-10 h-10 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl transition-colors duration-200 cursor-pointer shadow-2xs"
+              title="Perbarui Data"
+            >
+              <RefreshCw className={`w-4 h-4 text-slate-400 ${loading ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 4 Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 2. STATISTIC METRIC CARDS (Tremor / shadcn Card Style) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {statCards.map((card, i) => (
-          <div key={i} className="panel p-4 flex flex-col justify-between min-h-[108px]">
-            <div className="flex items-start justify-between">
-              <span className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider leading-tight">
-                {card.label}
-              </span>
-              <div className={`w-9 h-9 rounded-xl ${card.iconBg} border ${card.iconBorder} ${card.iconColor} flex items-center justify-center shrink-0`}>
-                {card.icon}
+          <div
+            key={i}
+            className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all duration-200 flex flex-col justify-between min-h-[145px]"
+          >
+            <div>
+              <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                <span>{card.label}</span>
+                <div className={`w-8 h-8 rounded-lg ${card.iconBg} border ${card.iconBorder} ${card.iconColor} flex items-center justify-center shrink-0`}>
+                  {card.icon}
+                </div>
+              </div>
+              <div className="text-3xl font-bold text-slate-900 tracking-tight mt-1 mb-1 tabular-nums">
+                {card.value}
               </div>
             </div>
-            <div className="mt-2">
-              <span className="text-[28px] font-bold text-[#0F172A] tabular-nums leading-none">
-                {card.value}
-              </span>
-              <div className="text-[11px] font-medium mt-1.5">
-                {card.sub}
-              </div>
+            <div className="text-xs font-medium text-slate-500 mt-2">
+              {card.sub}
             </div>
           </div>
         ))}
       </div>
 
       {/* Row 2: Charts — Trends & Donut */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
         <div className="lg:col-span-7 flex flex-col">
           <AttendanceTrendsChart />
         </div>
@@ -246,30 +293,30 @@ export default function AdminDashboard() {
       </div>
 
       {/* Row 3: Recent Sessions & Calendar / Quick Nav */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Left: Recent Sessions Table */}
         <div className="lg:col-span-7">
-          <div className="panel overflow-hidden">
-            <div className="p-4 border-b border-[#E3E8EF] flex items-center justify-between">
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+            <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-[#202B3C] tracking-tight">
+                <h3 className="text-sm font-semibold text-slate-900 tracking-tight">
                   Sesi Presensi Terbaru
                 </h3>
-                <p className="text-[11px] text-[#697586] mt-0.5">
+                <p className="text-xs text-slate-400 mt-0.5">
                   Daftar sesi absensi QR code yang tercatat di sistem
                 </p>
               </div>
 
               <button
                 onClick={() => navigate('/admin/laporan')}
-                className="text-xs font-semibold text-[#243B64] hover:text-[#1C2E4E] inline-flex items-center gap-1 transition-colors"
+                className="text-xs font-medium text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <span>Lihat Semua</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            <div className="table-container border-x-0 border-b-0 rounded-b-xl rounded-t-none">
+            <div className="table-container border-0 rounded-none">
               <table className="enterprise-table">
                 <thead>
                   <tr>
@@ -366,20 +413,20 @@ export default function AdminDashboard() {
                       <tr key={session.sessionId}>
                         <td>
                           <div>
-                            <span className="font-semibold text-xs text-[#202B3C] block">
+                            <span className="font-semibold text-xs text-slate-900 block">
                               {session.className}
                             </span>
-                            <span className="text-[11px] text-[#697586] block">
+                            <span className="text-[11px] text-slate-400 block">
                               SMA Negeri 1
                             </span>
                           </div>
                         </td>
                         <td>
-                          <div className="text-xs text-[#202B3C] font-medium">
+                          <div className="text-xs text-slate-900 font-medium font-mono">
                             {formatTime(session.startsAt)} - {formatTime(session.endsAt)}
                           </div>
-                          <div className="text-[11px] text-[#697586] flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-[#9AA4B2]" />
+                          <div className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
+                            <Clock className="w-3 h-3 text-slate-400" />
                             <span>{formatDate(session.startsAt)}</span>
                           </div>
                         </td>
@@ -389,7 +436,7 @@ export default function AdminDashboard() {
                         <td className="text-right">
                           <button
                             onClick={() => navigate('/admin/laporan')}
-                            className="text-xs font-semibold text-[#2563EB] hover:text-[#1D4ED8] inline-flex items-center gap-1 py-1 px-2 rounded hover:bg-[#E8EDFF] transition-colors"
+                            className="text-xs font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
                           >
                             <span>Detail</span>
                             <ChevronRight className="w-3.5 h-3.5" />
@@ -405,72 +452,72 @@ export default function AdminDashboard() {
         </div>
 
         {/* Right: Calendar & Quick Navigation */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-5 space-y-6 sm:space-y-8">
           {/* Calendar Widget */}
           <MiniCalendar />
 
           {/* Quick Administration Modules & Infrastructure Status */}
-          <div className="panel p-4 space-y-3.5">
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs space-y-5">
             <div>
-              <span className="text-[10px] font-semibold text-[#64748B] tracking-wider uppercase block">
+              <span className="text-xs font-semibold text-slate-500 tracking-wider uppercase block">
                 Modul Administrasi Cepat
               </span>
-              <div className="mt-2 divide-y divide-[#F1F5F9] text-xs">
+              <div className="mt-3 divide-y divide-slate-100 text-xs">
                 <button
                   onClick={() => navigate('/admin/siswa')}
-                  className="w-full py-2 flex items-center justify-between text-[#0F172A] hover:text-[#2563EB] font-medium transition-colors"
+                  className="w-full py-2.5 flex items-center justify-between text-slate-800 hover:text-blue-600 font-medium transition-colors cursor-pointer"
                 >
-                  <span className="flex items-center gap-2">
-                    <Users className="w-3.5 h-3.5 text-[#64748B]" />
+                  <span className="flex items-center gap-2.5">
+                    <Users className="w-4 h-4 text-slate-400" />
                     Data Siswa & Akun
                   </span>
-                  <ArrowRight className="w-3 h-3 text-[#94A3B8]" />
+                  <ChevronRight className="w-4 h-4 text-slate-300" />
                 </button>
                 <button
                   onClick={() => navigate('/admin/guru')}
-                  className="w-full py-2 flex items-center justify-between text-[#0F172A] hover:text-[#2563EB] font-medium transition-colors"
+                  className="w-full py-2.5 flex items-center justify-between text-slate-800 hover:text-blue-600 font-medium transition-colors cursor-pointer"
                 >
-                  <span className="flex items-center gap-2">
-                    <GraduationCap className="w-3.5 h-3.5 text-[#64748B]" />
+                  <span className="flex items-center gap-2.5">
+                    <GraduationCap className="w-4 h-4 text-slate-400" />
                     Data Guru Pengampu
                   </span>
-                  <ArrowRight className="w-3 h-3 text-[#94A3B8]" />
+                  <ChevronRight className="w-4 h-4 text-slate-300" />
                 </button>
                 <button
                   onClick={() => navigate('/admin/kelas')}
-                  className="w-full py-2 flex items-center justify-between text-[#0F172A] hover:text-[#2563EB] font-medium transition-colors"
+                  className="w-full py-2.5 flex items-center justify-between text-slate-800 hover:text-blue-600 font-medium transition-colors cursor-pointer"
                 >
-                  <span className="flex items-center gap-2">
-                    <BookOpen className="w-3.5 h-3.5 text-[#64748B]" />
+                  <span className="flex items-center gap-2.5">
+                    <BookOpen className="w-4 h-4 text-slate-400" />
                     Data Rombel & Kelas
                   </span>
-                  <ArrowRight className="w-3 h-3 text-[#94A3B8]" />
+                  <ChevronRight className="w-4 h-4 text-slate-300" />
                 </button>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-[#E3E8EF]">
-              <span className="text-[10px] font-semibold text-[#697586] tracking-wider uppercase block">
+            <div className="pt-4 border-t border-slate-100">
+              <span className="text-xs font-semibold text-slate-500 tracking-wider uppercase block">
                 Status Infrastruktur
               </span>
-              <div className="mt-2 space-y-1.5 text-xs">
+              <div className="mt-3 space-y-2 text-xs">
                 <div className="flex items-center justify-between py-1">
-                  <span className="text-[#697586] flex items-center gap-1.5">
-                    <Server className="w-3.5 h-3.5 text-[#9AA4B2]" />
+                  <span className="text-slate-600 flex items-center gap-2">
+                    <Server className="w-4 h-4 text-slate-400" />
                     Database Firestore
                   </span>
-                  <span className="text-emerald-700 font-medium text-xs flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" />
+                  <span className="text-emerald-700 font-semibold text-xs flex items-center gap-1.5 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block animate-pulse" />
                     Terhubung
                   </span>
                 </div>
                 <div className="flex items-center justify-between py-1">
-                  <span className="text-[#697586] flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#9AA4B2]" />
+                  <span className="text-slate-600 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-slate-400" />
                     Autentikasi Pengguna
                   </span>
-                  <span className="text-emerald-700 font-medium text-xs flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" />
+                  <span className="text-emerald-700 font-semibold text-xs flex items-center gap-1.5 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block animate-pulse" />
                     Aktif
                   </span>
                 </div>

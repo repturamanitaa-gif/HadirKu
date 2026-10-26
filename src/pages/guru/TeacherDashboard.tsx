@@ -105,12 +105,12 @@ export default function TeacherDashboard() {
   }).format(new Date());
 
   return (
-    <div className="space-y-8 sm:space-y-10 animate-fade-in pb-16">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-8">
       {/* 1. HERO HEADER: GURU OVERVIEW (Linear / Vercel style) */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-7 sm:p-9 shadow-xs">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-2.5 flex-wrap">
+      <div className="hero-card bg-white border border-slate-200/80 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
+          <div className="space-y-2.5">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
                 {todayFormatted}
               </span>

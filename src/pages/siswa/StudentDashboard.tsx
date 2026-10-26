@@ -265,262 +265,230 @@ export default function StudentDashboard() {
   const checkInTime = todayRecord ? formatTime(todayRecord.checkedAt) : '07:12 WIB';
 
   return (
-    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-16">
-      {/* 12-COLUMN FIGMA ASYMMETRIC GRID (8 cols left, 4 cols right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-20 max-w-full overflow-hidden">
+      {/* 12-COLUMN FIGMA ASYMMETRIC GRID: Desktop 8:4, Mobile 1-Column Native App */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
         
-        {/* LEFT COLUMN (8 cols): Hero Banner + Metrics + Jadwal Pelajaran */}
-        <div className="lg:col-span-8 space-y-6 sm:space-y-8">
+        {/* LEFT COLUMN: Desktop 8-cols, Mobile full width native feed */}
+        <div className="lg:col-span-8 space-y-5 sm:space-y-7">
 
-          {/* 1. MINT GREEN HERO CHECK-IN CARD (Exact Figma reference style with illustration) */}
-          <div className="relative overflow-hidden rounded-[26px] bg-gradient-to-r from-[#eef9f2] via-[#f0fbf4] to-[#f4fbf6] border border-emerald-200/60 p-7 sm:p-9 shadow-xs">
-            {/* Subtle background glow */}
-            <div className="absolute right-0 top-0 w-80 h-full bg-emerald-200/20 blur-3xl pointer-events-none rounded-full" />
+          {/* 1. COMPACT NATIVE MOBILE HERO BANNER (360-430px optimized, 24px-28px font scale) */}
+          <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-[#EEF9F2] via-[#F2FAF5] to-[#F8FDF9] border border-emerald-200/70 p-5 sm:p-7 shadow-xs">
+            <div className="flex items-center justify-between gap-4 relative z-10">
+              <div className="space-y-2 flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-800 text-[11px] font-bold border border-emerald-300/60">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                    Presensi Hari Ini
+                  </span>
+                </div>
 
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-              <div className="space-y-3.5 max-w-lg">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-300/60">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                  Presensi Hari ini
-                </span>
-
-                <h1 className="text-2xl sm:text-[32px] font-extrabold text-slate-900 tracking-tight leading-[1.2]">
+                <h1 className="text-xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight leading-tight">
                   {isCheckedInToday
-                    ? 'Kamu sudah melakukan presensi hari ini!'
-                    : 'Kamu belum melakukan presensi hari ini!'}
+                    ? 'Presensi Berhasil!'
+                    : 'Belum Presensi Hari Ini'}
                 </h1>
 
-                <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal">
+                <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal leading-relaxed">
                   {isCheckedInToday
-                    ? 'Terima kasih sudah disiplin. Tetap semangat untuk kegiatan belajar hari ini!'
-                    : 'Sesi pembelajaran KBM telah dimulai. Segera pindai kode QR untuk mencatat kehadiran.'}
+                    ? 'Kehadiranmu sudah tercatat tepat waktu.'
+                    : 'Pindai kode QR kelas untuk mencatat kehadiran.'}
                 </p>
 
-                <div className="pt-2 flex flex-wrap items-center gap-3">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/90 border border-emerald-200/80 text-xs font-semibold text-slate-700 shadow-2xs">
+                <div className="pt-1 flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/90 border border-emerald-200 text-xs font-semibold text-slate-700 shadow-2xs">
                     <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Masuk tercatat:</span>
+                    <span>Masuk:</span>
                     <strong className="font-mono text-emerald-800 font-bold">
                       {isCheckedInToday ? checkInTime : '07:12 WIB'}
                     </strong>
-                  </div>
-
-                  <button
-                    onClick={() => navigate('/siswa/riwayat')}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 shadow-2xs transition-colors cursor-pointer"
-                  >
-                    <span>Lihat Detail</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </button>
+                  </span>
                 </div>
               </div>
 
-              {/* Character Illustration & Glowing Checkmark Badge */}
-              <div className="flex items-center gap-4 shrink-0 self-center md:self-auto">
-                <div className="relative">
-                  {/* Glowing Checkmark Badge */}
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/25 border-4 border-white">
-                    <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 stroke-[2.5]" />
-                  </div>
+              {/* Character Illustration SVG with Big Emerald Ring */}
+              <div className="relative shrink-0 flex items-center justify-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/25 border-4 border-white">
+                  <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 stroke-[2.5]" />
                 </div>
+              </div>
+            </div>
+          </div>
 
-                {/* Friendly Student Illustration SVG matching Figma Community character */}
-                <div className="w-28 h-32 relative hidden sm:flex items-end justify-center">
-                  <svg viewBox="0 0 120 130" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Backpack straps behind */}
-                    <path d="M28 70C28 90 32 110 35 125" stroke="#1E3A8A" strokeWidth="6" strokeLinecap="round" />
-                    <path d="M92 70C92 90 88 110 85 125" stroke="#1E3A8A" strokeWidth="6" strokeLinecap="round" />
-                    {/* Body White Shirt */}
-                    <path d="M24 75C24 62 40 55 60 55C80 55 96 62 96 75L94 130H26L24 75Z" fill="#FFFFFF" />
-                    {/* Blue Tie */}
-                    <polygon points="58,62 62,62 65,95 60,102 55,95" fill="#2563EB" />
-                    <polygon points="56,60 64,60 62,66 58,66" fill="#1D4ED8" />
-                    {/* Collar */}
-                    <path d="M38 58L52 66L60 60L68 66L82 58" stroke="#E2E8F0" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-                    {/* Neck */}
-                    <rect x="52" y="44" width="16" height="15" rx="3" fill="#FBBF24" />
-                    {/* Head */}
-                    <circle cx="60" cy="34" r="20" fill="#FCD34D" />
-                    {/* Eyes & Friendly Smile */}
-                    <circle cx="53" cy="34" r="2" fill="#1E293B" />
-                    <circle cx="67" cy="34" r="2" fill="#1E293B" />
-                    <path d="M56 41C58 44 62 44 64 41" stroke="#1E293B" strokeWidth="2" strokeLinecap="round" />
-                    {/* Hair (Sleek modern side-swept) */}
-                    <path d="M38 30C38 18 48 12 60 12C72 12 82 18 82 30C82 33 79 31 74 27C68 23 58 24 50 28C44 31 40 33 38 30Z" fill="#1E293B" />
-                    {/* Backpack Top Handle */}
-                    <path d="M48 55C48 48 72 48 72 55" stroke="#1E3A8A" strokeWidth="3" strokeLinecap="round" fill="none" />
+          {/* 2. MOBILE QUICK ACTIONS: 2x2 TOUCH-OPTIMIZED GRID (HIG / Material 3 Guidelines) */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {/* Action 1: Pindai QR (Primary Royal Blue) */}
+            <button
+              onClick={() => navigate('/siswa/scan')}
+              className="p-4 sm:p-5 rounded-[20px] bg-[#2563EB] hover:bg-blue-700 text-white flex flex-col justify-between h-[105px] sm:h-[115px] shadow-sm shadow-blue-500/20 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <ScanLine className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left leading-tight">
+                <span className="text-[14px] sm:text-[15px] font-bold block">Pindai QR</span>
+                <span className="text-[11px] text-blue-100 font-normal">Absen Sekarang</span>
+              </div>
+            </button>
+
+            {/* Action 2: Ajukan Izin */}
+            <button
+              onClick={() => setShowLeaveModal(true)}
+              className="p-4 sm:p-5 rounded-[20px] bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-900 flex flex-col justify-between h-[105px] sm:h-[115px] shadow-2xs transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div className="text-left leading-tight">
+                <span className="text-[14px] sm:text-[15px] font-bold block">Ajukan Izin</span>
+                <span className="text-[11px] text-slate-400 font-normal">Surat Dokter / Ket.</span>
+              </div>
+            </button>
+
+            {/* Action 3: Riwayat Kehadiran */}
+            <button
+              onClick={() => navigate('/siswa/riwayat')}
+              className="p-4 sm:p-5 rounded-[20px] bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-900 flex flex-col justify-between h-[105px] sm:h-[115px] shadow-2xs transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center shrink-0 border border-blue-100">
+                <Calendar className="w-5 h-5" />
+              </div>
+              <div className="text-left leading-tight">
+                <span className="text-[14px] sm:text-[15px] font-bold block">Riwayat Absen</span>
+                <span className="text-[11px] text-slate-400 font-normal">Semua Rekap</span>
+              </div>
+            </button>
+
+            {/* Action 4: Agenda KBM */}
+            <button
+              onClick={() => {
+                const el = document.getElementById('jadwal-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="p-4 sm:p-5 rounded-[20px] bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-900 flex flex-col justify-between h-[105px] sm:h-[115px] shadow-2xs transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
+                <Clock className="w-5 h-5" />
+              </div>
+              <div className="text-left leading-tight">
+                <span className="text-[14px] sm:text-[15px] font-bold block">Jadwal Kelas</span>
+                <span className="text-[11px] text-slate-400 font-normal">4 Mapel Hari Ini</span>
+              </div>
+            </button>
+          </div>
+
+          {/* 3. ATTENDANCE ANALYTICS: CIRCULAR GAUGE + METRICS PILLS */}
+          <div className="bg-white rounded-[24px] border border-slate-200/80 p-5 sm:p-6 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <span className="text-[15px] font-bold text-slate-900">Performa Kehadiran</span>
+              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                Semester Genap
+              </span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6">
+              {/* Circular Gauge */}
+              <div className="flex items-center gap-4 w-full sm:w-auto">
+                <div className="relative w-18 h-18 shrink-0 flex items-center justify-center">
+                  <svg className="w-18 h-18 transform -rotate-90">
+                    <circle cx="36" cy="36" r="28" stroke="#E2E8F0" strokeWidth="6" fill="transparent" />
+                    <circle
+                      cx="36"
+                      cy="36"
+                      r="28"
+                      stroke="#2563EB"
+                      strokeWidth="6"
+                      strokeDasharray={175}
+                      strokeDashoffset={175 - (175 * stats.persentaseKehadiran) / 100}
+                      strokeLinecap="round"
+                      fill="transparent"
+                    />
                   </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 2. THREE-PIECE METRIC ROW: CIRCULAR GAUGE + KPI MINI CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6">
-            {/* Metric 1 (5 cols): Circular Percentage Gauge */}
-            <div className="sm:col-span-5 bg-white p-6 rounded-[22px] border border-slate-200/80 shadow-xs flex items-center gap-5">
-              {/* Circular SVG Ring */}
-              <div className="relative w-20 h-20 shrink-0 flex items-center justify-center">
-                <svg className="w-20 h-20 transform -rotate-90">
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="32"
-                    stroke="#E2E8F0"
-                    strokeWidth="7"
-                    fill="transparent"
-                  />
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="32"
-                    stroke="#2563EB"
-                    strokeWidth="7"
-                    strokeDasharray={201}
-                    strokeDashoffset={201 - (201 * stats.persentaseKehadiran) / 100}
-                    strokeLinecap="round"
-                    fill="transparent"
-                  />
-                </svg>
-                <span className="absolute font-extrabold text-base text-slate-900 tracking-tight">
-                  {stats.persentaseKehadiran}%
-                </span>
-              </div>
-
-              <div className="leading-tight">
-                <h4 className="text-xs font-bold text-slate-900">Persentase Kehadiran</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">Semester Genap 2025/2026</p>
-                <span className="inline-flex items-center gap-1 text-[11px] text-emerald-600 font-bold mt-2">
-                  <span>↑ 4%</span>
-                  <span className="text-slate-400 font-normal">dari semester lalu</span>
-                </span>
-              </div>
-            </div>
-
-            {/* Metric 2, 3, 4 (7 cols): Hadir, Izin/Sakit, Alpha mini cards */}
-            <div className="sm:col-span-7 grid grid-cols-3 gap-3">
-              {/* Hadir */}
-              <div className="bg-white p-4.5 rounded-[22px] border border-slate-200/80 shadow-xs flex flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-[11px] font-bold text-slate-700">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    Hadir
+                  <span className="absolute font-extrabold text-[15px] text-slate-900">
+                    {stats.persentaseKehadiran}%
                   </span>
-                  <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <Calendar className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <span className="text-2xl font-extrabold text-slate-900 block">{stats.totalHadir}</span>
-                  <span className="text-[10px] text-slate-400 block mt-0.5">dari 20 sesi</span>
-                </div>
-              </div>
-
-              {/* Izin / Sakit */}
-              <div className="bg-white p-4.5 rounded-[22px] border border-slate-200/80 shadow-xs flex flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-[11px] font-bold text-slate-700 truncate">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                    Izin/Sakit
-                  </span>
-                  <div className="w-6 h-6 rounded-md bg-amber-50 text-amber-600 flex items-center justify-center">
-                    <FileText className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <span className="text-2xl font-extrabold text-slate-900 block">{stats.totalTerlambat}</span>
-                  <span className="text-[10px] text-slate-400 block mt-0.5">pertemuan</span>
-                </div>
-              </div>
-
-              {/* Alpha */}
-              <div className="bg-white p-4.5 rounded-[22px] border border-slate-200/80 shadow-xs flex flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-[11px] font-bold text-slate-700">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                    Alpha
-                  </span>
-                  <div className="w-6 h-6 rounded-md bg-rose-50 text-rose-600 flex items-center justify-center">
-                    <AlertTriangle className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <span className="text-2xl font-extrabold text-slate-900 block">{stats.totalAlpha}</span>
-                  <span className="text-[10px] text-slate-400 block mt-0.5">pertemuan</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 3. JADWAL PELAJARAN HARI INI (Figma Style with pill time tags) */}
-          <div className="bg-white rounded-[24px] border border-slate-200/80 p-6 sm:p-7 shadow-xs">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center font-bold">
-                  <Calendar className="w-4.5 h-4.5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">Jadwal Pelajaran Hari Ini</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Senin, 26 Okt 2026 • Kelas X IPA 1</p>
+                  <h3 className="text-[14px] font-bold text-slate-900">Tingkat Kehadiran</h3>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Disiplin dan tepat waktu</p>
+                  <span className="inline-block text-[11px] text-emerald-600 font-bold mt-1">↑ 4% peningkatan</span>
                 </div>
               </div>
 
-              <button
-                onClick={() => navigate('/siswa/riwayat')}
-                className="text-xs font-semibold text-[#2563EB] hover:text-blue-700 flex items-center gap-1 cursor-pointer transition-colors"
-              >
-                <span>Lihat Semua</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
+              {/* 3 Metrics Pills */}
+              <div className="grid grid-cols-3 gap-2.5 w-full flex-1">
+                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                  <span className="text-[10px] text-slate-400 block font-semibold">Hadir</span>
+                  <span className="text-[18px] font-extrabold text-slate-900 block leading-tight mt-0.5">{stats.totalHadir}</span>
+                  <span className="text-[9px] text-emerald-600 font-medium">sesi</span>
+                </div>
+                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                  <span className="text-[10px] text-slate-400 block font-semibold">Izin</span>
+                  <span className="text-[18px] font-extrabold text-amber-600 block leading-tight mt-0.5">{stats.totalTerlambat}</span>
+                  <span className="text-[9px] text-slate-400 font-medium">sesi</span>
+                </div>
+                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                  <span className="text-[10px] text-slate-400 block font-semibold">Alpha</span>
+                  <span className="text-[18px] font-extrabold text-slate-400 block leading-tight mt-0.5">{stats.totalAlpha}</span>
+                  <span className="text-[9px] text-slate-400 font-medium">sesi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 4. JADWAL PELAJARAN: VERTICAL NATIVE MOBILE CARDS */}
+          <div id="jadwal-section" className="bg-white rounded-[24px] border border-slate-200/80 p-5 sm:p-6 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div>
+                <h2 className="text-[16px] sm:text-[18px] font-bold text-slate-900">Jadwal KBM Hari Ini</h2>
+                <p className="text-[11px] text-slate-400">Senin, 26 Okt 2026 • Kelas X IPA 1</p>
+              </div>
+
+              <span className="text-xs font-semibold text-[#2563EB] bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
+                4 Mapel
+              </span>
             </div>
 
             <div className="space-y-3">
               {TODAY_SCHEDULE.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-300 hover:shadow-2xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-[20px] bg-slate-50/70 hover:bg-slate-50 border border-slate-100 transition-all flex items-center justify-between gap-3.5"
                 >
-                  <div className="flex items-center gap-4">
-                    {/* Time Pill Badge (Stacked Start & End time) */}
-                    <div className="px-3 py-2 rounded-xl bg-blue-50/80 border border-blue-100 text-[#2563EB] font-mono text-xs font-bold text-center shrink-0 min-w-[76px] leading-tight">
-                      <span className="block">{item.time.split(' - ')[0]}</span>
-                      <span className="block text-[10px] text-blue-400 font-medium">{item.time.split(' - ')[1]}</span>
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    {/* Time Pill */}
+                    <div className="px-2.5 py-1.5 rounded-xl bg-white border border-slate-200/90 text-[#2563EB] font-mono text-[11px] font-bold text-center shrink-0 min-w-[70px] shadow-2xs">
+                      <span>{item.time.split(' - ')[0]}</span>
                     </div>
 
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900">{item.subject}</h4>
-                      <div className="flex flex-wrap items-center gap-3 mt-1 text-xs text-slate-500">
-                        <span className="flex items-center gap-1.5">
-                          <User className="w-3.5 h-3.5 text-slate-400" />
-                          {item.teacher}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                          {item.room}
-                        </span>
-                      </div>
+                    <div className="min-w-0 leading-tight">
+                      <h3 className="text-[14px] sm:text-[15px] font-bold text-slate-900 truncate">{item.subject}</h3>
+                      <p className="text-[12px] text-slate-500 truncate mt-1 flex items-center gap-1.5">
+                        <span>{item.teacher}</span>
+                        <span className="text-slate-300">•</span>
+                        <span>{item.room}</span>
+                      </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 self-start sm:self-center">
+                  <div className="shrink-0">
                     {item.status === 'completed' && (
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <CheckCircle2 className="w-3 h-3" />
                         Selesai
                       </span>
                     )}
                     {item.status === 'ongoing' && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#2563EB] border border-blue-200">
-                        <span className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-                        Sedang Berlangsung
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] animate-pulse" />
+                        Aktif
                       </span>
                     )}
                     {item.status === 'upcoming' && (
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-slate-50 text-slate-500 border border-slate-200">
-                        Akan Datang
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-white text-slate-400 border border-slate-200">
+                        Nanti
                       </span>
                     )}
-                    <ChevronRight className="w-4 h-4 text-slate-300 hidden sm:block" />
                   </div>
                 </div>
               ))}
@@ -529,66 +497,23 @@ export default function StudentDashboard() {
 
         </div>
 
-        {/* RIGHT COLUMN (4 cols): Aksi Cepat (Top Priority) + Riwayat Presensi Vertikal */}
-        <div className="lg:col-span-4 space-y-6 sm:space-y-8">
+        {/* RIGHT COLUMN: Desktop 4-cols, Mobile continuation */}
+        <div className="lg:col-span-4 space-y-5 sm:space-y-7">
           
-          {/* 1. AKSI CEPAT (Top Tier Action Banner) */}
-          <div className="bg-white rounded-[24px] border border-slate-200/80 p-6 sm:p-7 shadow-xs space-y-3.5">
-            <div className="flex items-center gap-2 pb-1">
-              <Sparkles className="w-4 h-4 text-[#2563EB]" />
-              <h3 className="text-sm font-bold text-slate-900">Aksi Cepat</h3>
-            </div>
-
-            {/* Primary Action Button (Blue Full Banner) */}
-            <button
-              onClick={() => navigate('/siswa/scan')}
-              className="w-full p-4 rounded-2xl bg-[#2563EB] hover:bg-blue-700 text-white font-semibold flex items-center gap-3.5 shadow-sm shadow-blue-500/25 transition-all cursor-pointer active:scale-98"
-            >
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                <ScanLine className="w-5 h-5 text-white" />
-              </div>
-              <div className="text-left">
-                <span className="text-sm font-bold block">Pindai QR Presensi</span>
-                <span className="text-[11px] text-blue-100 block font-normal">Lakukan presensi sekarang</span>
-              </div>
-            </button>
-
-            {/* Secondary Action (Formulir Izin / Sakit) */}
-            <button
-              onClick={() => setShowLeaveModal(true)}
-              className="w-full p-4 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-semibold flex items-center gap-3.5 shadow-2xs transition-all cursor-pointer active:scale-98"
-            >
-              <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
-                <FileText className="w-5 h-5 text-slate-500" />
-              </div>
-              <div className="text-left">
-                <span className="text-sm font-bold block">Ajukan Izin / Sakit</span>
-                <span className="text-[11px] text-slate-400 block font-normal">Kirim surat dokter &amp; keterangan</span>
-              </div>
-            </button>
-          </div>
-
-          {/* 2. RIWAYAT PRESENSI VERTIKAL (Exact Figma Feed) */}
-          <div className="bg-white rounded-[24px] border border-slate-200/80 p-6 sm:p-7 shadow-xs">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center font-bold">
-                  <Clock className="w-4 h-4" />
-                </div>
-                <h3 className="text-base font-bold text-slate-900">Riwayat Presensi</h3>
-              </div>
-
+          {/* 5. RIWAYAT PRESENSI TIMELINE (Native Mobile Activity Feed) */}
+          <div className="bg-white rounded-[24px] border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <h2 className="text-[15px] sm:text-[16px] font-bold text-slate-900">Riwayat Terakhir</h2>
               <button
                 onClick={() => navigate('/siswa/riwayat')}
-                className="text-xs font-semibold text-[#2563EB] hover:text-blue-700 flex items-center gap-1 cursor-pointer transition-colors"
+                className="text-xs font-semibold text-[#2563EB] hover:text-blue-700 flex items-center gap-0.5 cursor-pointer"
               >
                 <span>Lihat Semua</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            {/* Vertical Feed matching Figma screenshot */}
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {[
                 { day: 'Sen', date: '26 Okt', type: 'Datang', time: '07:12 WIB', status: 'Hadir', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
                 { day: 'Jum', date: '24 Okt', type: 'Pulang', time: '14:30 WIB', status: 'Hadir', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
@@ -598,29 +523,26 @@ export default function StudentDashboard() {
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-2xl bg-slate-50/60 hover:bg-slate-50 border border-slate-100/90 flex items-center justify-between gap-3 transition-colors"
+                  className="p-3 rounded-2xl bg-slate-50/60 hover:bg-slate-50 border border-slate-100/90 flex items-center justify-between gap-3 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/90 flex flex-col items-center justify-center text-xs font-bold text-slate-800 shrink-0 shadow-2xs">
+                    <div className="w-9 h-9 rounded-xl bg-white border border-slate-200/80 flex flex-col items-center justify-center text-[11px] font-bold text-slate-800 shrink-0 shadow-2xs">
                       <span>{item.day}</span>
-                      <span className="text-[9px] text-slate-400 font-semibold">{item.date.split(' ')[0]}</span>
+                      <span className="text-[8px] text-slate-400 font-semibold">{item.date.split(' ')[0]}</span>
                     </div>
 
                     <div className="leading-tight">
                       <div className="flex items-center gap-1.5">
                         <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'Hadir' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                        <span className="text-xs font-bold text-slate-800">{item.type}</span>
+                        <span className="text-[13px] font-bold text-slate-800">{item.type}</span>
                       </div>
                       <span className="text-[11px] text-slate-400 font-mono mt-0.5 block">{item.time}</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1.5">
-                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${item.badge}`}>
-                      {item.status}
-                    </span>
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
-                  </div>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${item.badge}`}>
+                    {item.status}
+                  </span>
                 </div>
               ))}
             </div>

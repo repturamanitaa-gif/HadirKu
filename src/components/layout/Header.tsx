@@ -34,12 +34,12 @@ export default function Header({ onMenuClick, title }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 h-20 bg-white/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-6 sm:px-10">
+    <header className="sticky top-0 z-30 h-16 sm:h-20 bg-white/90 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-4 sm:px-8 lg:px-10">
       {/* Left: Mobile Toggle & Figma-style Search Bar */}
-      <div className="flex items-center gap-4 flex-1 max-w-xl">
+      <div className="flex items-center gap-3 sm:gap-4 flex-1 max-w-xl">
         <button
           onClick={onMenuClick}
-          className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors lg:hidden cursor-pointer"
+          className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors lg:hidden cursor-pointer active:scale-95"
           aria-label="Buka menu navigasi"
         >
           <Menu className="w-5 h-5" />

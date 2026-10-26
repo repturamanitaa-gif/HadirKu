@@ -205,12 +205,12 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-16">
+    <div className="space-y-8 sm:space-y-10 animate-fade-in pb-16">
       {/* 1. HERO HEADER: ADMINISTRATOR OVERVIEW (Linear / Vercel style) */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-          <div className="space-y-2.5">
-            <div className="flex items-center gap-2 flex-wrap">
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-7 sm:p-9 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
                 {todayFormatted}
               </span>

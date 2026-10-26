@@ -265,19 +265,19 @@ export default function StudentDashboard() {
   const checkInTime = todayRecord ? formatTime(todayRecord.checkedAt) : '07:12 WIB';
 
   return (
-    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-20 max-w-full overflow-hidden">
+    <div className="space-y-7 sm:space-y-9 animate-fade-in pb-20 max-w-full overflow-hidden">
       {/* 12-COLUMN FIGMA ASYMMETRIC GRID: Desktop 8:4, Mobile 1-Column Native App */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-7 lg:gap-8 items-start">
         
         {/* LEFT COLUMN: Desktop 8-cols, Mobile full width native feed */}
-        <div className="lg:col-span-8 space-y-5 sm:space-y-7">
+        <div className="lg:col-span-8 space-y-6 sm:space-y-8">
 
           {/* 1. COMPACT NATIVE MOBILE HERO BANNER (360-430px optimized, 24px-28px font scale) */}
-          <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-[#EEF9F2] via-[#F2FAF5] to-[#F8FDF9] border border-emerald-200/70 p-5 sm:p-7 shadow-xs">
+          <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-[#EEF9F2] via-[#F2FAF5] to-[#F8FDF9] border border-emerald-200/70 p-6 sm:p-8 shadow-xs">
             <div className="flex items-center justify-between gap-4 relative z-10">
-              <div className="space-y-2 flex-1 min-w-0">
+              <div className="space-y-2.5 flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-800 text-[11px] font-bold border border-emerald-300/60">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/90 text-emerald-800 text-[11px] font-bold border border-emerald-300/60">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                     Presensi Hari Ini
                   </span>

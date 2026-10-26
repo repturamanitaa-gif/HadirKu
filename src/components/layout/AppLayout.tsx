@@ -48,8 +48,8 @@ export default function AppLayout() {
       <div className="flex-1 flex flex-col min-w-0 min-h-screen bg-[#F8FAFC]">
         <Header onMenuClick={() => setSidebarOpen(true)} />
 
-        {/* Responsive padding: 4 (16px) on 360-430px mobile, 8 on desktop; pb-24 for native bottom bar clearance */}
-        <main className="flex-1 px-4 py-5 sm:px-6 sm:py-7 lg:p-8 max-w-[1600px] w-full mx-auto pb-28 lg:pb-8">
+        {/* Responsive padding: more breathing room on mobile, tablet, and wide desktop */}
+        <main className="flex-1 px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-9 max-w-[1600px] w-full mx-auto pb-32 lg:pb-12">
           <Outlet />
         </main>
       </div>

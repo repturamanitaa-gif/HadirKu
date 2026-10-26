@@ -100,14 +100,14 @@ input:-webkit-autofill:active {
 /* Surface Panel - Modern SaaS Card (Linear / Tremor style) */
 .panel {
   background-color: #ffffff !important;
-  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
   border-radius: 1.25rem !important; /* 20px (rounded-2xl) */
   box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.03) !important;
   overflow: hidden;
 }
 
 .panel-header {
-  padding: 1.125rem 1.5rem;
+  padding: 1.25rem 1.75rem;
   border-bottom: 1px solid #f1f5f9;
   display: flex;
   align-items: center;
@@ -115,7 +115,7 @@ input:-webkit-autofill:active {
 }
 
 .panel-body {
-  padding: 1.5rem;
+  padding: 1.75rem;
 }
 
 /* Form Inputs */
@@ -252,7 +252,7 @@ input:-webkit-autofill:active {
 }
 
 .enterprise-table th {
-  padding: 0.75rem 1.25rem;
+  padding: 1rem 1.5rem;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -264,7 +264,7 @@ input:-webkit-autofill:active {
 }
 
 .enterprise-table td {
-  padding: 0.875rem 1.25rem;
+  padding: 1.125rem 1.5rem;
   color: #0f172a;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;

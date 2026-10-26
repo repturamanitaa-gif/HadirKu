@@ -51,10 +51,10 @@ export default function AdminReports() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-12">
       {/* Breadcrumb & Header */}
-      <div>
-        <div className="flex items-center gap-1.5 text-xs text-[#64748B] mb-1">
+      <div className="space-y-3">
+        <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
           <Link to="/admin" className="hover:text-[#2563EB] transition-colors">
             Dashboard
           </Link>
@@ -62,33 +62,36 @@ export default function AdminReports() {
           <span className="text-[#0F172A] font-semibold">Laporan Rekap</span>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#0F172A] tracking-tight">
-              Laporan Rekap
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight">
+              Laporan Rekap Presensi
             </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Rekapitulasi kehadiran periodik seluruh kelas dan statistik absensi.
+            </p>
           </div>
           <button
             onClick={handleExportCSV}
-            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-white border border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#0F172A] rounded-lg text-xs font-semibold shadow-xs transition-colors self-start sm:self-auto"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#0F172A] rounded-xl text-xs sm:text-sm font-semibold shadow-xs transition-colors self-start sm:self-auto cursor-pointer"
           >
-            <Download className="w-3.5 h-3.5 text-[#64748B]" />
+            <Download className="w-4 h-4 text-[#64748B]" />
             <span>Ekspor CSV</span>
           </button>
         </div>
       </div>
 
       {/* Filter Bar with Periode, Kelas, Jenis Laporan, and Generate Button */}
-      <div className="panel p-3.5 bg-white">
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+      <div className="panel p-5 sm:p-6 bg-white shadow-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
           <div>
-            <label className="block text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-1">
+            <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-2">
               Periode
             </label>
             <select
               value={period}
               onChange={(e) => setPeriod(e.target.value)}
-              className="form-input w-full h-9 text-xs"
+              className="form-input w-full h-11 text-xs sm:text-sm bg-white"
             >
               <option value="Oktober 2026">Oktober 2026</option>
               <option value="September 2026">September 2026</option>
@@ -116,13 +119,31 @@ export default function AdminReports() {
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-1">
+            <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-2">
+              Kelas
+            </label>
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="form-input w-full h-11 text-xs sm:text-sm bg-white"
+            >
+              <option value="all">Semua Kelas</option>
+              {classes.map((c) => (
+                <option key={c.classId} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-2">
               Jenis Laporan
             </label>
             <select
               value={reportType}
               onChange={(e) => setReportType(e.target.value)}
-              className="form-input w-full h-9 text-xs"
+              className="form-input w-full h-11 text-xs sm:text-sm bg-white"
             >
               <option value="kehadiran">Rekap Kehadiran</option>
               <option value="keterlambatan">Rekap Keterlambatan</option>
@@ -133,10 +154,10 @@ export default function AdminReports() {
           <div>
             <button
               onClick={() => {}}
-              className="w-full h-9 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1 shadow-xs transition-colors"
+              className="w-full h-11 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
             >
-              <span>Generate</span>
-              <ChevronRight className="w-3.5 h-3.5" />
+              <span>Generate Laporan</span>
+              <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>

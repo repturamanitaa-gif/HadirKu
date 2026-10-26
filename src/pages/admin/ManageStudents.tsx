@@ -149,10 +149,10 @@ export default function ManageStudents() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in pb-12">
       {/* Breadcrumb & Header */}
-      <div>
-        <div className="flex items-center gap-1.5 text-xs text-[#64748B] mb-1">
+      <div className="space-y-3">
+        <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
           <Link to="/admin" className="hover:text-[#2563EB] transition-colors">
             Dashboard
           </Link>
@@ -160,15 +160,18 @@ export default function ManageStudents() {
           <span className="text-[#0F172A] font-semibold">Data Siswa</span>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#0F172A] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight">
               Data Siswa
             </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Daftar seluruh siswa terdaftar dan status akun presensi.
+            </p>
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-lg text-xs font-semibold shadow-xs transition-colors self-start sm:self-auto"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-xs sm:text-sm font-semibold shadow-xs transition-colors self-start sm:self-auto cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Siswa</span>
@@ -178,13 +181,14 @@ export default function ManageStudents() {
 
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Cari nama siswa, NIS, atau kelas..."
-          className="form-input w-full pl-10 h-10 text-xs bg-white"
+          style={{ paddingLeft: '2.75rem' }}
+          className="form-input w-full h-11 text-xs sm:text-sm bg-white"
         />
       </div>
 

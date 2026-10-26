@@ -14,6 +14,7 @@ export interface UserProfile {
   createdAt: Date;
   nis?: string;
   className?: string;
+  password?: string;
 }
 
 // --- Class Types ---

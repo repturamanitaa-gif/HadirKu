@@ -128,11 +128,74 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // Check custom local students & teachers created via admin panel
+    const checkLocalAccount = (): boolean => {
+      try {
+        const storedStudentsRaw = localStorage.getItem('hadirku_data_students_v3');
+        if (storedStudentsRaw) {
+          const storedStudents: UserProfile[] = JSON.parse(storedStudentsRaw);
+          const matchedStudent = storedStudents.find(
+            (s) => s.email?.trim().toLowerCase() === lowerEmail
+          );
+          if (matchedStudent) {
+            // If student has a defined password, verify it. If not set (default seed), allow matching or default 'siswa123'
+            const validPass = matchedStudent.password || 'siswa123';
+            if (password === validPass) {
+              const studentProfile: UserProfile = {
+                ...matchedStudent,
+                role: 'siswa',
+                active: matchedStudent.active ?? true,
+                createdAt: matchedStudent.createdAt ? new Date(matchedStudent.createdAt) : new Date(),
+              };
+              localStorage.setItem('hadirku_demo_user', JSON.stringify(studentProfile));
+              setUser({ uid: studentProfile.uid, email: studentProfile.email });
+              setProfile(studentProfile);
+              return true;
+            }
+          }
+        }
+
+        const storedTeachersRaw = localStorage.getItem('hadirku_data_teachers_v3');
+        if (storedTeachersRaw) {
+          const storedTeachers: UserProfile[] = JSON.parse(storedTeachersRaw);
+          const matchedTeacher = storedTeachers.find(
+            (t) => t.email?.trim().toLowerCase() === lowerEmail
+          );
+          if (matchedTeacher) {
+            const validPass = matchedTeacher.password || 'guru123';
+            if (password === validPass) {
+              const teacherProfile: UserProfile = {
+                ...matchedTeacher,
+                role: 'guru',
+                active: matchedTeacher.active ?? true,
+                createdAt: matchedTeacher.createdAt ? new Date(matchedTeacher.createdAt) : new Date(),
+              };
+              localStorage.setItem('hadirku_demo_user', JSON.stringify(teacherProfile));
+              setUser({ uid: teacherProfile.uid, email: teacherProfile.email });
+              setProfile(teacherProfile);
+              return true;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Local account check failed:', e);
+      }
+      return false;
+    };
+
+    if (checkLocalAccount()) {
+      return;
+    }
+
     // Normal Firebase login
     try {
       await signInWithEmailAndPassword(auth, email, password);
       localStorage.removeItem('hadirku_demo_user');
     } catch (err) {
+      // If Firebase failed (e.g. user-not-found / offline), re-check local storage as fallback
+      if (checkLocalAccount()) {
+        return;
+      }
       throw err;
     }
   };

@@ -99,6 +99,7 @@ export default function ManageTeachers() {
         email: form.email,
         role: 'guru',
         active: true,
+        password: form.password,
         createdAt: new Date(),
       };
       const updated = [newTeacher, ...teachers];

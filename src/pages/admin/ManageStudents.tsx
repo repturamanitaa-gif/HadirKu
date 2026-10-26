@@ -115,6 +115,7 @@ export default function ManageStudents() {
         className: form.className,
         role: 'siswa',
         active: true,
+        password: form.password,
         createdAt: new Date(),
       };
       const updated = [newStudent, ...students];
